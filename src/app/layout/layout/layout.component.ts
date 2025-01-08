@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
+toggleTheme() {
+  // Add code to toggle theme
+  
+}
 
 }
