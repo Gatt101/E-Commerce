@@ -1,0 +1,16 @@
+.darkaf{
+    background-color: #1a1a1a;
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.lightaf{
+    background-color: white;
+    color: black;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+
+}

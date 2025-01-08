@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-dark bg-gradient navbar-dark">
+<nav class="navbar navbar-expand-lg" [ngClass]="red ? 'bg-dark bg-gradient navbar-dark' : 'bg-light bg-gradient navbar-light'">
     <div class="container">
       <a class="navbar-brand" href="#">E-Store</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,7 +6,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
+          <li class="nav-item"> 
             <a class="nav-link active" aria-current="page" href="#" routerLink="home">Home</a>
           </li>
         </ul>
@@ -18,12 +18,12 @@
             <a class="nav-link" href="#" routerLink="register">Register</a>
           </li>
           <li class="nav-item" >
-            <button class="nav-link" href="#" (click)="toggleTheme()"><i class="bi bi-moon-stars-fill"></i></button>
+            <button class="nav-link" href="#" (click)="toggleTheme()"><i [ngClass]="red ? 'bi bi-moon-fill' : 'bi bi-brightness-high-fill'"></i></button>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <main class="container mt-5">
+  <main class="container-fluid" [ngClass]="red ? 'darkaf' : 'lightaf'">
     <router-outlet></router-outlet>
     </main>
