@@ -1,0 +1,15 @@
+.hero-banner {
+    padding: 4rem 0;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+  }
+  
+  .hero-banner h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-banner .lead {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
