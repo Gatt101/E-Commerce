@@ -14,16 +14,7 @@ export class LayoutComponent {
 
   ngOnInit() 
   {
-    // Add code to check if user i
+    
   }
-
-  red:boolean = false;
-  blue:boolean = false;
-
-toggleTheme() 
-{
-  // Add code to toggle theme
-  this.red =!this.red;
-}
 
 }

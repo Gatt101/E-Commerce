@@ -1,15 +1,15 @@
-<nav class="navbar navbar-expand-lg sticky-top" [ngClass]="red ? 'bg-dark bg-gradient navbar-dark' : 'bg-light bg-gradient navbar-light'">
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <i class="bi bi-shop me-2"></i>E-Store
+        <span class="brand-text">E-Store</span>
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <form class="d-flex mx-auto search-form">
           <div class="input-group">
-            <input class="form-control search-input" type="search" placeholder="Search products..." aria-label="Search">
+            <input class="form-control search-input" type="search" placeholder="Search for products..." aria-label="Search">
             <button class="btn search-btn" type="submit">
               <i class="bi bi-search"></i>
             </button>
@@ -18,27 +18,28 @@
 
         <ul class="navbar-nav ms-auto nav-links">
           <li class="nav-item"> 
-            <a class="nav-link" aria-current="page" href="#" routerLink="home">
-              <i class="bi bi-house-fill"></i>
+            <a class="nav-link" routerLink="home" routerLinkActive="active">
+              <i class="bi bi-house-heart"></i>
               <span>Home</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" routerLink="login">
-              <i class="bi bi-person-circle me-1"></i>
+            <a class="nav-link" routerLink="login" routerLinkActive="active">
+              <i class="bi bi-person-heart"></i>
               <span>Login</span>
             </a>
           </li>
           <li class="nav-item">
-            <button class="nav-link theme-toggle" (click)="toggleTheme()">
-              <i [ngClass]="red ? 'bi bi-moon-fill' : 'bi bi-brightness-high-fill'"></i>
-            </button>
+            <a class="nav-link cart-link">
+              <i class="bi bi-cart3"></i>
+              <span class="cart-count">0</span>
+            </a>
           </li>
         </ul>
       </div>
     </div>
-  </nav>
+</nav>
   
-  <main class="container-fluid" [ngClass]="red ? 'darkaf' : 'lightaf'">
+  <main class="container-fluid">
     <router-outlet></router-outlet>
   </main>

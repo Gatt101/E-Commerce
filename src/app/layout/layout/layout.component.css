@@ -13,18 +13,32 @@
 /* Navbar Styles */
 .navbar {
     padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
-    font-size: 1.8rem;
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #333;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
     transition: all 0.3s ease;
 }
 
-.navbar-brand:hover {
-    transform: scale(1.05);
+.navbar-brand i {
+    color: #0d6efd;
+    font-size: 1.8rem;
+}
+
+.brand-text {
+    background: linear-gradient(45deg, #ff4b8b, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 2px;
 }
 
 /* Search Form Styles */
@@ -37,7 +51,7 @@
     min-width: 350px;
     border-radius: 25px 0 0 25px;
     padding: 12px 25px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #eee;
     transition: all 0.3s ease;
     font-size: 15px;
     background-color: #f8f9fa;
@@ -45,7 +59,7 @@
 
 .search-input:hover {
     background-color: #fff;
-    border-color: #c0c0c0;
+    border-color: #0d6efd;
 }
 
 .search-input:focus {
@@ -56,79 +70,108 @@
 
 .search-btn {
     border-radius: 0 25px 25px 0;
-    background-color: #0d6efd;
+    background: #0d6efd;
     color: white;
     padding: 0 30px;
-    border: 2px solid #0d6efd;
+    border: none;
     transition: all 0.3s ease;
 }
 
 .search-btn:hover {
-    background-color: #0b5ed7;
-    border-color: #0b5ed7;
+    background: #0b5ed7;
     transform: translateX(2px);
 }
 
-.search-btn i {
-    font-size: 1.1rem;
-}
-
-/* Dark Theme Search Adjustments */
-.navbar-dark .search-input {
-    background-color: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-.navbar-dark .search-input:hover {
-    background-color: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.2);
-}
-
-.navbar-dark .search-input:focus {
-    background-color: rgba(255,255,255,0.15);
-    border-color: #0d6efd;
-}
-
-.navbar-dark .search-input::placeholder {
-    color: rgba(255,255,255,0.6);
-}
-
 /* Nav Links Styles */
-.nav-links .nav-item {
-    margin: 0 5px;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .nav-link {
     padding: 8px 15px;
     border-radius: 20px;
+    color: #666;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 5px;
+    font-weight: 500;
 }
 
-.nav-link:hover {
+.nav-link i {
+    font-size: 1.2rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #0d6efd;
     background-color: rgba(13, 110, 253, 0.1);
 }
 
-.theme-toggle {
-    border: none;
-    background: none;
+/* Cart Link Styles */
+.cart-link {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .search-form {
         width: 100%;
         margin: 15px 0;
     }
     
     .search-input {
-        min-width: 200px;
+        min-width: auto;
     }
     
     .nav-links {
         margin-top: 10px;
+        flex-direction: column;
+        align-items: stretch;
     }
+    
+    .nav-link {
+        justify-content: center;
+    }
+}
+
+/* Dark Theme Adjustments */
+.navbar.dark-theme {
+    background: rgba(33, 33, 33, 0.95);
+}
+
+.dark-theme .navbar-brand,
+.dark-theme .nav-link {
+    color: #fff;
+}
+
+.dark-theme .search-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.dark-theme .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.dark-theme .nav-link:hover,
+.dark-theme .nav-link.active {
+    background-color: rgba(13, 110, 253, 0.2);
 }

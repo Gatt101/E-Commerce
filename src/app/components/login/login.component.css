@@ -1,0 +1,172 @@
+.login-container {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-image: url('../../../assets/001.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 80px;
+}
+
+.login-box {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    overflow: hidden;
+    margin-top: -40px;
+}
+
+/* Form Section Styles */
+.form-section {
+    padding: 40px;
+}
+
+.form-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f8f8f8;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #537df2;
+    background-color: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 75, 108, 0.1);
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.forgot-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+    color: #537df2;
+}
+
+.sign-in-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #537df2;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sign-in-btn:hover {
+    background-color: #537df2;
+    transform: translateY(-2px);
+}
+
+.sign-in-btn:disabled {
+    background-color:#99b3f9;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Welcome Section Styles */
+.welcome-section {
+    background-color: #537df2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.welcome-content h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.welcome-content p {
+    font-size: 16px;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.sign-up-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sign-up-btn:hover {
+    background: white;
+    color: #537df2;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .login-box {
+        max-width: 400px;
+    }
+
+    .welcome-section {
+        padding: 30px;
+    }
+
+    .form-section {
+        padding: 30px;
+    }
+
+    .welcome-content h1 {
+        font-size: 24px;
+    }
+}
