@@ -1,1 +1,52 @@
-<p>register works!</p>
+<div class="login-container">
+    <div class="login-box">
+        <div class="row">
+            <!-- Left Column - Register Form -->
+            <div class="col-md-6 form-section">
+                <h2>Create Account</h2>
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label>FULL NAME</label>
+                        <input type="text" 
+                               class="form-control" 
+                               formControlName="name" 
+                               placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" 
+                               class="form-control" 
+                               formControlName="email" 
+                               placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label>USERNAME</label>
+                        <input type="text" 
+                               class="form-control" 
+                               formControlName="username" 
+                               placeholder="Choose a username">
+                    </div>
+                    <div class="form-group">
+                        <label>PASSWORD</label>
+                        <input type="password" 
+                               class="form-control" 
+                               formControlName="password" 
+                               placeholder="Create a password">
+                    </div>
+                    <button type="submit" class="sign-in-btn" [disabled]="!userForm.valid">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Right Column - Welcome Section -->
+            <div class="col-md-6 welcome-section">
+                <div class="welcome-content">
+                    <h1>Hello, Friend!</h1>
+                    <p>Join us and start your shopping journey</p>
+                    <button class="sign-up-btn" routerLink="/login">Already have an account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
