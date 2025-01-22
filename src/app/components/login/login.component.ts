@@ -32,11 +32,15 @@ export class LoginComponent {
        {
          console.log('JWT Token:', data);
          localStorage.setItem('jwtToken', data);
-         this.router.navigate(['/dashboard']); 
+         alert('Login successful');
+         this.router.navigate(['/home']); 
        }, (error) => {
         alert('Invalid credentials');
          console.error(error);
        });
+  }
+  login(){
+    this.router.navigate(['/register']);
   }
 
 }

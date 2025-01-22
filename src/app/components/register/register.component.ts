@@ -15,10 +15,10 @@ export class RegisterComponent {
 
   constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private router: Router) {
     this.userForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      name: ['', [Validators.required]]
     });
   }
 
@@ -30,7 +30,8 @@ export class RegisterComponent {
         .subscribe(
           (response) => {
             console.log('Registration successful:', response);
-            this.router.navigate(['/login']);
+            this.router.navigate(['/home']);
+            alert('Registration successful');
           },
           (error) => {
             alert('Registration failed');
@@ -38,5 +39,8 @@ export class RegisterComponent {
           }
         );
     }
+  }
+  login(){
+    this.router.navigate(['/login']);
   }
 }
