@@ -7,7 +7,7 @@
         <h5 class="card-title">{{product.title}}</h5>
         <p class="card-text">{{product.description}}</p>
         <h5 class="card-title">{{product.price | currency:'INR'}}</h5>
-        <a href="#" class="btn btn-primary">Buy Now</a>
+        <button class="btn btn-primary" (click)="buyNow(product)">Buy Now</button>
         <button class="btn btn-danger" (click)="addToCart(product)">Add to Cart</button>
       </div>
     </div>

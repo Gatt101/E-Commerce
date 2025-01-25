@@ -35,7 +35,7 @@
                 <span>Total Amount:</span>
                 <span>{{getTotal() | currency:'INR'}}</span>
             </div>
-            <button class="btn-checkout">Proceed to Checkout</button>
+            <button class="btn-checkout" (click)="navigateToCheckout()">Proceed to Checkout</button>
         </div>
     </div>
 </div>
@@ -45,6 +45,6 @@
         <i class="bi bi-cart-x"></i>
         <h2>Your cart is empty</h2>
         <p>Looks like you haven't added anything to your cart yet.</p>
-        <button class="btn-shopping" routerLink="/product">Continue Shopping</button>
+        <button class="btn-shopping" routerLink="../product" >Continue Shopping</button>
     </div>
 </ng-template>
