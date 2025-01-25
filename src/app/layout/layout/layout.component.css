@@ -35,7 +35,7 @@
 
 .brand-text {
     background: linear-gradient(45deg, #ff4b8b, #ff6b6b);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'Poppins', sans-serif;
     letter-spacing: 2px;
@@ -116,17 +116,19 @@
 
 .cart-count {
     position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #0d6efd;
+    top: -8px;
+    right: -8px;
+    background: #537df2;
     color: white;
     border-radius: 50%;
-    width: 20px;
+    min-width: 20px;
     height: 20px;
     font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 6px;
+    font-weight: 600;
 }
 
 /* Responsive Styles */
@@ -174,4 +176,12 @@
 .dark-theme .nav-link:hover,
 .dark-theme .nav-link.active {
     background-color: rgba(13, 110, 253, 0.2);
+}
+
+.cart-link span{
+    color: #e4ebf4;
+    font-size: 1rem;
+    font-weight: 200;
+    margin-right: 0.3rem;
+    margin-bottom: 0.5rem;
 }

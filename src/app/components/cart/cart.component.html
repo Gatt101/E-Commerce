@@ -1,0 +1,50 @@
+<div class="cart-container">
+    <div class="cart-header">
+        <h1>Shopping Cart</h1>
+    </div>
+    
+    <div class="cart-content" *ngIf="cartItems().length > 0; else noItems">
+        <div class="cart-items">
+            <div class="cart-item" *ngFor="let item of cartItems()">
+                <div class="item-image">
+                    <img [src]="item.image" [alt]="item.title">
+                </div>
+                <div class="item-details">
+                    <h3>{{item.title}}</h3>
+                    <p class="item-description">{{item.description}}</p>
+                    <div class="item-price">{{item.price | currency:'INR'}}</div>
+                </div>
+                <div class="item-quantity">
+                    <span>Quantity: {{item.quantity}}</span>
+                </div>
+                <div class="item-actions">
+                    <button class="btn-remove" (click)="removeFromCart(item)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-item">
+                <span>Total Items:</span>
+                <span>{{cartItems().length}}</span>
+            </div>
+            <div class="summary-item">
+                <span>Total Amount:</span>
+                <span>{{getTotal() | currency:'INR'}}</span>
+            </div>
+            <button class="btn-checkout">Proceed to Checkout</button>
+        </div>
+    </div>
+</div>
+
+<ng-template #noItems>
+    <div class="empty-cart">
+        <i class="bi bi-cart-x"></i>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <button class="btn-shopping" routerLink="/product">Continue Shopping</button>
+    </div>
+</ng-template>
