@@ -9,9 +9,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [NgFor, CurrencyPipe, NgIf, CartComponent, CheckoutComponent],
+  imports: [NgFor, CurrencyPipe],
   templateUrl: './product.component.html',
-  styleUrl: './product.component.css'
+  styleUrl: './product.component.css',
 })
 export class ProductComponent implements OnInit {
   products: any[] = [];
@@ -24,17 +24,24 @@ export class ProductComponent implements OnInit {
 
   ngOnInit() {
     this.productService.getProducts().subscribe((data: any) => {
-      this.products = data; 
+      this.products = data;
     });
   }
 
   addToCart(item: CartItem): void {
-    this.cartService.addToCart(item);
+    if (typeof localStorage !== 'undefined') {
+      this.cartService.addToCart(item);
+    } else {
+      console.error('localStorage is not available');
+    }
   }
 
-  buyNow(product: CartItem): void {
-    this.addToCart(product);
- // Add to cart first
-    this.router.navigate(['/checkout']); // Navigate to checkout
+  buyNow(item: CartItem): void {
+    if (typeof localStorage !== 'undefined') {
+      this.cartService.buyNow(item);
+      this.router.navigate(['/checkout']);
+    } else {
+      console.error('localStorage is not available');
+    }
   }
 }

@@ -3,12 +3,25 @@
     <div class="order-summary">
       <h2>Order Summary</h2>
       <div class="order-items">
-        <div class="order-item" *ngFor="let item of cartItems()">
+        <!-- Display Buy Now Item if it exists -->
+        <div *ngIf="buyNowItem() as item" class="order-item">
           <img [src]="item.image" [alt]="item.title">
           <div class="item-details">
             <h4>{{item.title}}</h4>
             <p>Quantity: {{item.quantity}}</p>
             <p class="price">{{item.price | currency:'INR'}}</p>
+          </div>
+        </div>
+
+        <!-- Display Cart Items if no Buy Now Item exists -->
+        <div *ngIf="!buyNowItem()">
+          <div class="order-item" *ngFor="let item of cartItems()">
+            <img [src]="item.image" [alt]="item.title">
+            <div class="item-details">
+              <h4>{{item.title}}</h4>
+              <p>Quantity: {{item.quantity}}</p>
+              <p class="price">{{item.price | currency:'INR'}}</p>
+            </div>
           </div>
         </div>
       </div>

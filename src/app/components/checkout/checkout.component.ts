@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CartService } from '../../service/cart.service';
+import { Component, inject, Signal } from '@angular/core';
+import { CartItem, CartService } from '../../service/cart.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +13,9 @@ import { Router } from '@angular/router';
 })
 export class CheckoutComponent {
   checkoutForm: FormGroup;
+
   cartItems = this.cartService.getCartItems();
+  buyNowItem = this.cartService.getBuyNowItem();
 
   constructor(
     private cartService: CartService,
@@ -34,13 +36,23 @@ export class CheckoutComponent {
   }
 
   getTotal(): number {
+    const buyNowItem = this.buyNowItem();
+    if (buyNowItem) {
+      return buyNowItem.price * buyNowItem.quantity;
+    }
     return this.cartService.getTotal();
   }
 
   onSubmit() {
     if (this.checkoutForm.valid) {
-      // Here you would typically process the payment and order
-      this.cartService.clearCart();
+      const buyNowItem = this.buyNowItem();
+      if (buyNowItem) {
+       
+        this.cartService.clearBuyNowItem(); 
+      } else {
+        
+        this.cartService.clearCart(); 
+      }
       this.router.navigate(['/home']);
       alert('Order placed successfully!');
     }
