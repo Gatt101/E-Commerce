@@ -13,8 +13,17 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
  
 export class CartComponent {
   constructor(private cartService:CartService,private router:Router) {}
-
+  jwtToken: string | null = null;
   cartItems = this.cartService.getCartItems();
+
+ 
+ngOnInit(): void {
+  //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+  //Add 'implements OnInit' to the class.
+  if (typeof window !== 'undefined' && window.localStorage) {
+    this.jwtToken = localStorage.getItem('jwtToken');
+  }
+} 
 
   getcartItems():Signal<CartItem[]> {
     return this.cartItems;
@@ -30,6 +39,12 @@ export class CartComponent {
     return this.cartService.getTotal();
   }
   navigateToCheckout():void {
-    this.router.navigate(['/checkout']);
+    if (this.jwtToken !== null) {
+      this.router.navigate(['/checkout']);
+    }
+    else{
+      alert('Please login to proceed to checkout');
+      this.router.navigate(['/login']);
+    }
   }
 }

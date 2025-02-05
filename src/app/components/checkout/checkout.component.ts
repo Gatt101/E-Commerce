@@ -1,8 +1,10 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartItem, CartService } from '../../service/cart.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { OrderService } from '../../service/order.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-checkout',
@@ -11,13 +13,15 @@ import { Router } from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.css'
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
-
   cartItems = this.cartService.getCartItems();
   buyNowItem = this.cartService.getBuyNowItem();
+  userId: string | null = null; // Store user ID
 
   constructor(
+    private orderService: OrderService,
+    private userService: UserService,
     private cartService: CartService,
     private formBuilder: FormBuilder,
     private router: Router
@@ -35,6 +39,17 @@ export class CheckoutComponent {
     });
   }
 
+  ngOnInit() {
+    this.userService.getUser().subscribe(
+      (response) => {
+        this.userId = response.userId; // Store userId
+      },
+      (error) => {
+        console.error('Error fetching user ID:', error);
+      }
+    );
+  }
+
   getTotal(): number {
     const buyNowItem = this.buyNowItem();
     if (buyNowItem) {
@@ -45,16 +60,40 @@ export class CheckoutComponent {
 
   onSubmit() {
     if (this.checkoutForm.valid) {
+      if (!this.userId) {
+        alert('User ID not found. Please log in again.');
+        return;
+      }
+
       const buyNowItem = this.buyNowItem();
       if (buyNowItem) {
-       
-        this.cartService.clearBuyNowItem(); 
+        const orderData = {
+            user_id: this.userId, // Now correctly assigned
+            product_id: buyNowItem.id,
+            product_name: buyNowItem.title,
+            price: buyNowItem.price,
+            quantity: buyNowItem.quantity,
+            viewed_at: new Date().toISOString() 
+         };
+
+        this.orderService.addOrder(orderData).subscribe(
+          (response) => {
+            console.log('Order placed:', response);
+            this.cartService.clearBuyNowItem();
+            this.router.navigate(['/home']);
+            alert('Order placed successfully!');
+          },
+          (error) => {
+            console.error('Order placement failed:', error);
+            alert('Failed to place order. Please try again.');
+          }
+        );
       } else {
-        
-        this.cartService.clearCart(); 
+        this.cartService.clearCart();
+        this.router.navigate(['/home']);
+        alert('Order placed successfully!');
       }
-      this.router.navigate(['/home']);
-      alert('Order placed successfully!');
     }
   }
 }
+

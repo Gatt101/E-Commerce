@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class ProductComponent implements OnInit {
   products: any[] = [];
+  jwtToken: string | null = null; // ✅ Ensure initialization
 
   constructor(
     private productService: ProductService,
@@ -23,13 +24,24 @@ export class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.productService.getProducts().subscribe((data: any) => {
-      this.products = data;
+    // ✅ Ensure the product list is always fetched
+    this.productService.getProducts().subscribe({
+      next: (data: any) => {
+        this.products = data;
+      },
+      error: (err) => {
+        console.error('Error fetching products:', err);
+      }
     });
+
+    // ✅ Fix localStorage check for SSR
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.jwtToken = localStorage.getItem('jwtToken');
+    }
   }
 
   addToCart(item: CartItem): void {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof window !== 'undefined' && window.localStorage) {
       this.cartService.addToCart(item);
     } else {
       console.error('localStorage is not available');
@@ -37,11 +49,16 @@ export class ProductComponent implements OnInit {
   }
 
   buyNow(item: CartItem): void {
-    if (typeof localStorage !== 'undefined') {
-      this.cartService.buyNow(item);
-      this.router.navigate(['/checkout']);
+    if (this.jwtToken !== null) {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        this.cartService.buyNow(item);
+        this.router.navigate(['/checkout']);
+      } else {
+        console.error('localStorage is not available');
+      }
     } else {
-      console.error('localStorage is not available');
+      alert('Please login to continue with Buy Now');
+      this.router.navigate(['/login']);
     }
   }
 }

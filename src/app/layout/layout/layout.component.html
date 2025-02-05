@@ -36,6 +36,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" routerLink="myOrder" routerLinkActive="active">
+              <i class=" bi bi-bag "></i>
+              <span>My Orders</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link cart-link" routerLink="/cart">
               <i class="bi bi-cart3"></i>
               <span class="cart-count" *ngIf="count() > 0">{{count()}}</span>
