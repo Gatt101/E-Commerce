@@ -2,7 +2,8 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +18,24 @@ export class UserService {
 
   getUser(): Observable<any> {
     if (!isPlatformBrowser(this.platformId)) {
-      console.error('localStorage is not available (Not running in the browser)');
-      return new Observable();
+      console.error('Error: Not running in a browser environment.');
+      return throwError(() => new Error('Not running in the browser.'));
     }
 
     const jwtToken = localStorage.getItem('jwtToken');
 
     if (!jwtToken) {
-      console.error('JWT Token not found in localStorage');
-      return new Observable();
+      console.error('Error: JWT Token not found in localStorage.');
+      return throwError(() => new Error('JWT Token is missing.'));
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${jwtToken}`);
-    return this.httpClient.get<any>(this.apiurl, { headers });
+
+    return this.httpClient.get<any>(this.apiurl, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error fetching user data:', error);
+        return throwError(() => new Error('Failed to fetch user data.'));
+      })
+    );
   }
 }

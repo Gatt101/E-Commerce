@@ -17,7 +17,7 @@ export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
   cartItems = this.cartService.getCartItems();
   buyNowItem = this.cartService.getBuyNowItem();
-  userId: string | null = null; // Store user ID
+  userId: number | null = null; // Store user ID
 
   constructor(
     private orderService: OrderService,
@@ -42,13 +42,15 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.userService.getUser().subscribe(
       (response) => {
-        this.userId = response.userId; // Store userId
+        console.log('User Data:', response);
+        this.userId = response?.id || null; // Ensure userId exists
       },
       (error) => {
         console.error('Error fetching user ID:', error);
       }
     );
   }
+  
 
   getTotal(): number {
     const buyNowItem = this.buyNowItem();
@@ -68,6 +70,7 @@ export class CheckoutComponent implements OnInit {
       const buyNowItem = this.buyNowItem();
       if (buyNowItem) {
         const orderData = {
+          
             user_id: this.userId, // Now correctly assigned
             product_id: buyNowItem.id,
             product_name: buyNowItem.title,

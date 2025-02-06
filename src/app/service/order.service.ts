@@ -1,21 +1,49 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = `${environment.apiurl}/Orders`;
+  private apiUrl = `${environment.apiurl}/Orders`; // ✅ Correct API endpoint
 
   constructor(private http: HttpClient) {}
 
+  /** Fetch orders from the backend */
   getOrders(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl); // Angular's HTTP Interceptor will add JWT token
+    const headers = this.getAuthHeaders(); // Add JWT authentication
+    return this.http.get<any[]>(this.apiUrl, { headers });
   }
+
+  /** Add a new order */
   addOrder(order: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, order);
+    const headers = this.getAuthHeaders();
+  
+    // ✅ Correctly format request body
+    const requestBody = {
+      user: { id: order.user_id },  // ✅ Correct foreign key reference
+      productId: order.product_id,
+      productName: order.product_name,
+      price: order.price,
+      quantity: order.quantity,
+      viewedAt: order.viewed_at || new Date().toISOString()
+    };
+  
+    console.log("Final Order Payload Sent:", requestBody);
+  
+    return this.http.post<any>(this.apiUrl, requestBody, { headers });
+  }
+  
+
+  /** Helper function to get authentication headers */
+  private getAuthHeaders(): HttpHeaders {
+    const jwtToken = localStorage.getItem('jwtToken'); // ✅ Ensure token is retrieved
+    if (!jwtToken) {
+      console.error('JWT Token not found in localStorage');
+      throw new Error('User is not authenticated');
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${jwtToken}`);
   }
 }
