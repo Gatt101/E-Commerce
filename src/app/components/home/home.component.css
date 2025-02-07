@@ -18,7 +18,7 @@
 /* Selection Section Styles */
 .selection {
     padding: 5rem 0;
-    background-image: url('../../../assets/01.jpg');
+    background-image: url('https://ucarecdn.com/122fe78b-39e2-43bd-b5c5-7da34a1d60c1/-/preview/999x361/');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -223,11 +223,11 @@
 }
 
 .offer-card.summer-sale {
-    background-image: url('../../../assets/04.jpg');
+    background-image: url('https://ucarecdn.com/291286e9-116d-4c0d-ada1-5cab91226688/-/preview/1000x666/');
 }
 
 .offer-card.new-arrivals {
-    background-image: url('../../../assets/03.jpg');
+    background-image: url('https://ucarecdn.com/0804b977-1df3-4fff-8e8c-e001f025896c/-/preview/999x666/');
 }
 
 .offer-content {

@@ -8,7 +8,7 @@ import { response } from 'express';
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = `${environment.apiurl}/Orders`; // ✅ Correct API endpoint
+  private apiUrl = `${environment.apiurl}/Orders`; 
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +24,7 @@ export class OrderService {
   
     
     const requestBody = {
-      user: { id: order.user_id },  // ✅ Correct foreign key reference
+      user: { id: order.user_id },  
       productId: order.product_id,
       productName: order.product_name,
       price: order.price,
@@ -35,6 +35,23 @@ export class OrderService {
     console.log("Final Order Payload Sent:", requestBody);
   
     return this.http.post<any>(this.apiUrl, requestBody, { headers });
+  }
+
+  addMultipleOrders(orders: any[]): Observable<any[]> {
+    const newapiurl = this.apiUrl + '/multiple';
+    const headers = this.getAuthHeaders();
+    
+    console.log("Final Order Payload Sent:", orders);
+    const requestBody = orders.map((order) => ({
+      user: { id: order.user_id },
+      productId: order.product_id,
+      productName: order.product_name,
+      price: order.price,
+      quantity: order.quantity,
+      viewedAt: order.viewed_at || new Date().toISOString()
+    }))
+
+    return this.http.post<any[]>(newapiurl, requestBody, { headers });
   }
   
 

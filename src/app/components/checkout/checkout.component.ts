@@ -92,9 +92,27 @@ export class CheckoutComponent implements OnInit {
           }
         );
       } else {
-        this.cartService.clearCart();
-        this.router.navigate(['/home']);
-        alert('Order placed successfully!');
+        
+        const orderData = this.cartItems().map((item) => ({
+          user_id: this.userId, 
+          product_id: item.id,
+          product_name: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          viewed_at: new Date().toISOString() 
+        }));
+        this.orderService.addMultipleOrders(orderData).subscribe(
+          (response) => {
+            console.log('Order placed:', response);
+            this.cartService.clearCart();
+            this.router.navigate(['/home']);
+            alert('Order placed successfully!');
+          },
+          (error) => {
+            console.error('Order placement failed:', error);
+            alert('Failed to place order. Please try again.');
+          }
+        )
       }
     }
   }

@@ -1,35 +1,38 @@
-<div class="container-fluid ">
-    <div class="container mt-5 py-5 border rounded-5 bg-light border-primary">
-        <h1 class="text-start font-weight-bold text-primary ">Welcome {{name}}</h1>
-        <p class="text-start font-weight-bold">{{email}}</p>
+<div class="container-fluid">
+ 
+    <div class="container mt-5 py-4 px-5 border rounded-4 shadow bg-light border-primary">
+        <h1 class="text-start fw-bold text-primary">Welcome {{name}}</h1>
+        <p class="text-start fw-semibold text-secondary fs-5">{{email}}</p>
     </div>
     
-    <div class="container bg-light mt-3 border rounded-2">
+   
+    <div class="container bg-light mt-4 border rounded-4 shadow-sm p-4">
         <div class="row">
             <div class="col-md-12">
-                <h2>Orders</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
+                <h2 class="text-primary fw-bold">Your Orders</h2>
+                <div class="table-responsive mt-3">
+                    <table class="table table-hover border rounded-3">
+                        <thead class="table-primary text-center">
                             <tr>
-                                <th>Order ID</th>
-                                <th>Name</th>
-                                <th>Total</th>  
-                                <th>Date</th>
-                                <th>Quantity</th>
-    
+                                <th class="p-3">Order ID</th>
+                                <th class="p-3">Product Name</th>
+                                <th class="p-3">Total Price</th>  
+                                <th class="p-3">Date</th>
+                                <th class="p-3">Quantity</th>
                             </tr>   
                         </thead>
-                        <tbody>
-                            <tr *ngFor="let order of orders">
-                                <td>{{order.id}}</td>
-                                <td>{{order.productName}}</td>
-                                <td>{{order.price | currency:'INR'}}</td>
-                                <td>{{order.viewedAt}}</td>
-                                <td>{{order.quantity}}</td>
+                        <tbody class="text-center">
+                            <tr *ngFor="let order of orders" class="align-middle">
+                                <td class="p-3 fw-semibold">{{order.id}}</td>
+                                <td class="p-3 text-start">{{order.productName}}</td>
+                                <td class="p-3 fw-bold text-success">{{order.price | currency:'INR'}}</td>
+                                <td class="p-3 text-secondary">{{order.viewedAt}}</td>
+                                <td class="p-3 fw-semibold">{{order.quantity}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
     </div>
 </div>
