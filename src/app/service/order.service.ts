@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,16 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   /** Fetch orders from the backend */
-  getOrders(): Observable<any[]> {
+  getOrders(id:number): Observable<any[]> {
     const headers = this.getAuthHeaders(); // Add JWT authentication
-    return this.http.get<any[]>(this.apiUrl, { headers });
+    return this.http.get<any[]>(this.apiUrl + `/${id}`, { headers });
   }
 
   /** Add a new order */
   addOrder(order: any): Observable<any> {
     const headers = this.getAuthHeaders();
   
-    // ✅ Correctly format request body
+    
     const requestBody = {
       user: { id: order.user_id },  // ✅ Correct foreign key reference
       productId: order.product_id,

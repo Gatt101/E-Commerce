@@ -1,2 +1,35 @@
-<p>orders works!</p>
-<button (click)="printOrder()" >Print me</button>
+<div class="container-fluid ">
+    <div class="container mt-5 py-5 border rounded-5 bg-light border-primary">
+        <h1 class="text-start font-weight-bold text-primary ">Welcome {{name}}</h1>
+        <p class="text-start font-weight-bold">{{email}}</p>
+    </div>
+    
+    <div class="container bg-light mt-3 border rounded-2">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Orders</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Name</th>
+                                <th>Total</th>  
+                                <th>Date</th>
+                                <th>Quantity</th>
+    
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let order of orders">
+                                <td>{{order.id}}</td>
+                                <td>{{order.productName}}</td>
+                                <td>{{order.price | currency:'INR'}}</td>
+                                <td>{{order.viewedAt}}</td>
+                                <td>{{order.quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    </div>
+</div>
