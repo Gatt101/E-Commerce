@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, NgFor } from '@angular/common';
 import { CartItem, CartService } from '../../service/cart.service';
-import { CheckoutComponent } from '../checkout/checkout.component';
-import { CartComponent } from '../cart/cart.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,11 +9,14 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [NgFor, CurrencyPipe],
   templateUrl: './product.component.html',
-  styleUrl: './product.component.css',
+  styleUrls: ['./product.component.css'], // Fixed typo from styleUrl to styleUrls
 })
 export class ProductComponent implements OnInit {
+
   products: any[] = [];
+  originalProducts: any[] = []; // Store the original product list
   jwtToken: string | null = null; // ✅ Ensure initialization
+  currentCategory: string | null = null; // Track the current category
 
   constructor(
     private productService: ProductService,
@@ -28,16 +29,32 @@ export class ProductComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (data: any) => {
         this.products = data;
+        this.originalProducts = [...data]; // Store a copy of the original products
       },
       error: (err) => {
         console.error('Error fetching products:', err);
       }
     });
 
-    // ✅ Fix localStorage check for SSR
     if (typeof window !== 'undefined' && window.localStorage) {
       this.jwtToken = localStorage.getItem('jwtToken');
     }
+  }
+
+  // Toggle between categories
+  toggleCategory(category: string) {
+    if (this.currentCategory === category) {
+      // If the current category is already selected, reset to original products
+      this.products = [...this.originalProducts];
+      this.currentCategory = null; // Reset category
+    } else {
+      // Filter products based on the selected category
+      this.products = this.originalProducts.filter(
+        (product) => product.category === category
+      );
+      this.currentCategory = category; // Set the current category
+    }
+    console.log(this.products);
   }
 
   addToCart(item: CartItem): void {

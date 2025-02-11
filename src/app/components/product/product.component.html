@@ -1,5 +1,10 @@
-<div class="contain">
-  
+<div class="container my-3">
+  <div class="btn-container d-flex justify-content-center align-items-center w-50 mx-auto gap-3 py-3">
+    <button class="btn btn-primary" (click)="toggleCategory('men\'s clothing')">Men</button>
+    <button class="btn btn-primary" (click)="toggleCategory('women\'s clothing')">Women</button>
+    <button class="btn btn-primary" (click)="toggleCategory('jewelery')">Acessories</button>
+    <button class="btn btn-primary" (click)="toggleCategory('electronics')">Electronics</button>
+  </div>
   <div class="products-container">
     <div class="card" *ngFor="let product of products">
       <img class="card-img-top" src="{{product.image}}" alt="{{product.title}}">
@@ -12,5 +17,4 @@
       </div>
     </div>
   </div>
-  
 </div>
