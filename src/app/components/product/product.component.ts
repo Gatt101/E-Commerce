@@ -14,9 +14,9 @@ import { Router } from '@angular/router';
 export class ProductComponent implements OnInit {
 
   products: any[] = [];
-  originalProducts: any[] = []; // Store the original product list
-  jwtToken: string | null = null; // ✅ Ensure initialization
-  currentCategory: string | null = null; // Track the current category
+  originalProducts: any[] = []; 
+  jwtToken: string | null = null; 
+  currentCategory: string | null = null; 
 
   constructor(
     private productService: ProductService,
@@ -29,7 +29,7 @@ export class ProductComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (data: any) => {
         this.products = data;
-        this.originalProducts = [...data]; // Store a copy of the original products
+        this.originalProducts = [...data]; 
       },
       error: (err) => {
         console.error('Error fetching products:', err);
