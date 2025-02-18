@@ -71,7 +71,7 @@ export class CheckoutComponent implements OnInit {
       if (buyNowItem) {
         const orderData = {
           
-            user_id: this.userId, // Now correctly assigned
+            user_id: this.userId, 
             product_id: buyNowItem.id,
             product_name: buyNowItem.title,
             price: buyNowItem.price,
