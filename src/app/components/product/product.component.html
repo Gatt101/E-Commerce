@@ -1,19 +1,48 @@
 <div class="container my-3">
   <div class="btn-container d-flex justify-content-center align-items-center w-50 mx-auto gap-3 py-3">
-    <button class="btn btn-primary" (click)="toggleCategory('men\'s clothing')">Men</button>
-    <button class="btn btn-primary" (click)="toggleCategory('women\'s clothing')">Women</button>
-    <button class="btn btn-primary" (click)="toggleCategory('jewelery')">Acessories</button>
-    <button class="btn btn-primary" (click)="toggleCategory('electronics')">Electronics</button>
-  </div>
+     <!-- Men's Clothing Button -->
+     <button 
+     [ngClass]="{'btn-outline-primary': !isCategoryActive('men\'s clothing'), 'btn-primary': isCategoryActive('men\'s clothing')}" 
+     class="btn rounded px-4 py-2 fw-semibold shadow-sm hover-scalebtn" 
+     (click)="toggleCategory('men\'s clothing')">
+     Men
+   </button>
+
+   <!-- Women's Clothing Button -->
+   <button 
+     [ngClass]="{'btn-outline-primary': !isCategoryActive('women\'s clothing'), 'btn-primary': isCategoryActive('women\'s clothing')}" 
+     class="btn rounded px-4 py-2 fw-semibold shadow-sm hover-scalebtn" 
+     (click)="toggleCategory('women\'s clothing')">
+     Women
+   </button>
+
+   <!-- Accessories Button -->
+   <button 
+     [ngClass]="{'btn-outline-primary': !isCategoryActive('jewelery'), 'btn-primary': isCategoryActive('jewelery')}" 
+     class="btn rounded px-4 py-2 fw-semibold shadow-sm hover-scalebtn" 
+     (click)="toggleCategory('jewelery')">
+     Accessories
+   </button>
+
+   <!-- Electronics Button -->
+   <button 
+     [ngClass]="{'btn-outline-primary': !isCategoryActive('electronics'), 'btn-primary': isCategoryActive('electronics')}" 
+     class="btn rounded px-4 py-2 fw-semibold shadow-sm hover-scalebtn" 
+     (click)="toggleCategory('electronics')">
+     Electronics
+   </button>
+   </div>
   <div class="products-container">
     <div class="card" *ngFor="let product of products">
       <img class="card-img-top" src="{{product.image}}" alt="{{product.title}}">
       <div class="card-body">
-        <h5 class="card-title">{{product.title}}</h5>
+        <h5 class="card-title text-center fw-semilight">{{product.title}}</h5>
         <p class="card-text">{{product.description}}</p>
         <h5 class="card-title">{{product.price | currency:'INR'}}</h5>
-        <button class="btn btn-primary" (click)="buyNow(product)">Buy Now</button>
-        <button class="btn btn-danger" (click)="addToCart(product)">Add to Cart</button>
+        <div class="container d-flex justify-content-center gap-3">
+          <button class="btn btn-primary rounded-pill  px-4 py-2 fw-semilight fs-5 shadow-sm hover-scale" (click)="buyNow(product)">Buy Now</button>
+        <button class="btn btn-danger rounded-pill  px-4 py-2 fw-semilight fs-5 shadow-sm hover-scale" (click)="addToCart(product)">Add to Cart</button>
+        </div>
       </div>
     </div>
   </div>

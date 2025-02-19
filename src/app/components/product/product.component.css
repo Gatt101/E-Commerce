@@ -73,38 +73,39 @@
     font-weight: 700;
 }
 
+/* Add scale effect on hover */
+.hover-scale {
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.hover-scale:hover {
+    transform: scale(1.1); /* Increases button size slightly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Adds shadow for depth */
+}
+
+/* For primary button (Buy Now) */
 .btn-primary {
-    width: 100%;
-    padding: 12px;
-    background: #537df2;
+    background-color: #007bff; /* Default Bootstrap Blue */
     border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin-top: auto;
 }
 
 .btn-primary:hover {
-    background: #4265cc;
-    transform: translateY(-2px);
+    background-color: #0056b3; /* Darker shade on hover */
 }
 
-
+/* For danger button (Add to Cart) */
 .btn-danger {
-
-    width: 100%;
-    padding: 12px;
-    background: #f13844;
+    background-color: #dc3545; /* Default Bootstrap Red */
     border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin-top: auto;
 }
 
 .btn-danger:hover {
-    background: #e66069;
-    transform: translateY(-2px);
+    background-color: #b21f2d; /* Darker red on hover */
+}
+
+.hover-scalebtn{
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
 }
 
 @media (max-width: 992px) {

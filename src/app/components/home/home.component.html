@@ -2,12 +2,12 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <h1>Welcome to E-Store</h1>
+        <h1 class="text-3xl font-weight-bold">Welcome to E-Store</h1>
         <p class="lead">Discover amazing products at great prices</p>
-        <button class="btn btn-primary" (click)="products()">Shop Now</button>
+        <button class="btn btn-dark py-2 px-3" (click)="products()">Shop Now</button>
       </div>
       <div class="col-md-6">
-        <img src="assets/3725926.jpg" alt="E-Store Banner" class="img-fluid rounded-4">
+        <img src="https://ucarecdn.com/3f2142b2-b546-4d39-a78d-cca3176d26f5/-/preview/1000x666/" alt="E-Store Banner" class="img-fluid rounded-4">
       </div>
     </div>
   </div>
@@ -17,11 +17,11 @@
   <div class="container">
     <div class="quote-box text-center mb-5">
       <h1 class="quote">Style is a way to say who you are without having to speak</h1>
-      <p class="quote-author">- Rachel Zoe</p>
+      <p class="quote-author">-Rachel Zoe</p>
     </div>
     <div class="row justify-content-center g-4">
       <div class="col-md-4 text-center">
-        <button class="category-btn mens-btn">
+        <button class="category-btn mens-btn" (click)="productsformen()" >
           <i class="bi bi-person-standing"></i>
           <span>MEN</span>
         </button>
@@ -49,31 +49,31 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="carousel-content">
-            <img src="https://ucarecdn.com/dd8798b6-2a96-431b-82a0-a83b4760d292/-/preview/999x400/" class="d-block w-100" alt="Fashion Slide 1">
+            <img src="https://ucarecdn.com/fe819d37-54d6-4531-9723-e61cbf2e5476/-/preview/1000x666/" class="d-block w-100" alt="Fashion Slide 1">
             <div class="carousel-caption">
               <h3>Summer Collection</h3>
               <p>Discover our latest summer styles</p>
-              <button class="btn btn-light">Shop Now</button>
+              <button class="btn btn-light" (click)="products()">Shop Now</button>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-content">
-            <img src="https://ucarecdn.com/e8037b1b-c282-4139-aea8-cde11475518d/-/preview/1000x364/" class="d-block w-100" alt="Fashion Slide 2">
+            <img src="https://ucarecdn.com/40f85361-3ec5-4331-b1fb-f9c548c8c7e3/-/preview/1000x666/" class="d-block w-100" alt="Fashion Slide 2">
             <div class="carousel-caption">
               <h3>Autumn Essentials</h3>
               <p>Get ready for the season</p>
-              <button class="btn btn-light">Explore</button>
+              <button class="btn btn-light" (click)="products()">Explore</button>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-content">
-            <img src="https://ucarecdn.com/c42f980e-81ad-4dc8-9aba-f33595086623/-/preview/999x400/" class="d-block w-100" alt="Fashion Slide 3">
+            <img src="https://ucarecdn.com/3b95485e-bd91-42c8-bb11-22d2add566e8/-/preview/1000x666/" class="d-block w-100" alt="Fashion Slide 3">
             <div class="carousel-caption">
               <h3>New Arrivals</h3>
               <p>Check out our latest collection</p>
-              <button class="btn btn-light">View All</button>
+              <button class="btn btn-light" (click)="products()">View All</button>
             </div>
           </div>
         </div>

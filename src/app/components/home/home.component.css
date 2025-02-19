@@ -1,7 +1,7 @@
 /* Hero Banner */
 .hero-banner {
     padding: 4rem 0;
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    background: linear-gradient(to right, #f8f9fa, #f7f9f9);
 }
   
 .hero-banner h1 {
@@ -14,11 +14,10 @@
     font-size: 1.25rem;
     margin-bottom: 2rem;
 }
-
 /* Selection Section Styles */
 .selection {
     padding: 5rem 0;
-    background-image: url('https://ucarecdn.com/122fe78b-39e2-43bd-b5c5-7da34a1d60c1/-/preview/999x361/');
+    background-image: url('https://ucarecdn.com/791457ae-d535-44b4-8424-b69fde480ce2/-/preview/1000x692/');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -26,6 +25,7 @@
     min-height: 500px;
 }
 
+/* Remove dark overlay or reduce its opacity */
 .selection::before {
     content: '';
     position: absolute;
@@ -33,10 +33,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(42, 42, 42, 0.3); /* Reduce opacity for better visibility */
     z-index: 1;
 }
 
+/* Ensure content is above overlay */
 .selection .container {
     position: relative;
     z-index: 2;
@@ -55,12 +56,14 @@
     line-height: 1.4;
     margin-bottom: 1rem;
     font-style: italic;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* Improve readability */
 }
 
 .quote-author {
     color: #fff;
     font-size: 1.2rem;
     opacity: 0.9;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* Category Buttons */
@@ -69,40 +72,45 @@
     padding: 2rem 3rem;
     border: none;
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.2); /* Increase opacity for visibility */
+    backdrop-filter: blur(8px);
     transition: all 0.3s ease;
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* Icon inside buttons */
 .category-btn i {
     font-size: 3rem;
     margin-bottom: 1rem;
     display: block;
 }
 
+/* Button Text */
 .category-btn span {
     font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: 2px;
 }
 
+/* Hover Effects */
 .mens-btn:hover {
-    background: linear-gradient(135deg, rgba(13, 110, 253, 0.9) 0%, rgba(0, 153, 255, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(13, 110, 253, 1) 0%, rgba(0, 153, 255, 1) 100%);
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .womens-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 75, 139, 0.9) 0%, rgba(255, 107, 107, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(255, 75, 139, 1) 0%, rgba(255, 107, 107, 1) 100%);
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
+
 /* Carousel Section */
 .carousel-section {
-    background: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9));
+    background: linear-gradient(to right, #f8f9fa, #f7f9f9);
     background-size: cover;
     background-position: center;
     padding: 5rem 0;
@@ -172,7 +180,7 @@
 
 /* Categories Grid */
 .categories {
-    background: linear-gradient(rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.9));
+    background: linear-gradient(to right, #f8f9fa, #f7f9f9);
     background-size: cover;
     background-position: center;
     padding: 5rem 0;
@@ -213,6 +221,9 @@
 }
 
 /* Special Offers */
+ .special-offers {
+    background: linear-gradient(to right, #f8f9fa, #f7f9f9);
+}
 .offer-card {
     height: 300px;
     border-radius: 10px;
@@ -223,11 +234,11 @@
 }
 
 .offer-card.summer-sale {
-    background-image: url('https://ucarecdn.com/291286e9-116d-4c0d-ada1-5cab91226688/-/preview/1000x666/');
+    background-image: url('https://ucarecdn.com/85ae78cc-6ebc-4214-893d-07bab8523fa2/-/preview/1000x666/');
 }
 
 .offer-card.new-arrivals {
-    background-image: url('https://ucarecdn.com/0804b977-1df3-4fff-8e8c-e001f025896c/-/preview/999x666/');
+    background-image: url('https://ucarecdn.com/0caf7604-606a-4e46-b99d-8734e3d42eda/-/preview/1000x562/');
 }
 
 .offer-content {
