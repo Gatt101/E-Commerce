@@ -21,13 +21,13 @@
     </div>
     <div class="row justify-content-center g-4">
       <div class="col-md-4 text-center">
-        <button class="category-btn mens-btn" (click)="productsformen()" >
+        <button class="category-btn mens-btn" (click)="productsformen()">
           <i class="bi bi-person-standing"></i>
           <span>MEN</span>
         </button>
       </div>
       <div class="col-md-4 text-center">
-        <button class="category-btn womens-btn">
+        <button class="category-btn womens-btn" (click)="productsforwomen()">
           <i class="bi bi-person-standing-dress"></i>
           <span>WOMEN</span>
         </button>
@@ -100,7 +100,7 @@
           <div class="offer-content">
             <h3>Summer Sale</h3>
             <p>Up to 50% off on summer collection</p>
-            <button class="btn btn-outline-light">Shop Now</button>
+            <button class="btn btn-outline-light" (click)="products()">Shop Now</button>
           </div>
         </div>
       </div>
@@ -109,14 +109,13 @@
           <div class="offer-content">
             <h3>New Arrivals</h3>
             <p>Check out our latest collection</p>
-            <button class="btn btn-outline-light">Explore</button>
+            <button class="btn btn-outline-light" (click)="products()">Explore</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 <!-- Newsletter Section -->
 <section class="newsletter py-5 bg-dark text-white">
   <div class="container">
@@ -124,15 +123,28 @@
       <div class="col-md-8 text-center">
         <h2>Subscribe to Our Newsletter</h2>
         <p class="mb-4">Get updates about new products and special offers</p>
-        <form class="newsletter-form">
+        <form class="newsletter-form" (ngSubmit)="subscribeNewsletter($event)">
           <div class="input-group">
-            <input type="email" class="form-control" placeholder="Enter your email">
-            <button class="btn btn-primary" type="submit">Subscribe</button>
+            <input 
+            type="email"
+            class="form-control"
+            placeholder="Enter your email"
+            [(ngModel)]="email"
+             name="email"
+             #emailRef="ngModel"
+             pattern="/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/v"
+             required
+             >
+
+            <button 
+              class="btn btn-primary" 
+              type="submit"
+              [disabled]="isSubscribing">
+              {{ isSubscribing ? 'Subscribing...' : 'Subscribe' }}
+            </button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </section>
-
-

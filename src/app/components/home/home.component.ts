@@ -1,25 +1,62 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CategoryService } from '../../service/category.service';
+import { NewsletterService } from '../../service/newsletter.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
-  @Output() onClick: EventEmitter<any> = new EventEmitter();
+  email: string = '';
+  isSubscribing: boolean = false;
 
+  constructor(
+    private router: Router,
+    private categoryService: CategoryService,
+    private newsletterService: NewsletterService
+  ) {}
 
-  // Navigate to ProductComponent normally
   products() {
+    this.categoryService.setCategory('');
     this.router.navigate(['/product']);
   }
 
-  // Navigate with category query param
   productsformen() {
+    this.categoryService.setCategory('men\'s clothing');
     this.router.navigate(['/product']);
-    this.onClick.emit('formen');
+  }
+
+  productsforwomen() {
+    this.categoryService.setCategory('women\'s clothing');
+    this.router.navigate(['/product']);
+  }
+
+  subscribeNewsletter(event: Event) {
+    event.preventDefault();
+    if (!this.email) {
+      alert('Please enter an email address');
+      return;
+    }
+    
+    this.isSubscribing = true;
+    this.newsletterService.subscribe(this.email).subscribe({
+      next: () => {
+        alert('Thank you for subscribing to our newsletter!');
+        this.email = '';
+      },
+      error: (error) => {
+        console.error('Newsletter subscription failed:', error);
+        alert('Failed to subscribe. Please try again later.');
+      },
+      complete: () => {
+        this.isSubscribing = false;
+      }
+    });
   }
 }

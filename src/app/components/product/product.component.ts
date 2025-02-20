@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from '../../service/product.service';
 import { CurrencyPipe, NgClass, NgFor } from '@angular/common';
 import { CartItem, CartService } from '../../service/cart.service';
 import { Router } from '@angular/router';
 import { HomeComponent } from "../home/home.component";
+import { CategoryService } from '../../service/category.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -12,10 +14,8 @@ import { HomeComponent } from "../home/home.component";
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'], // Fixed typo from styleUrl to styleUrls
 })
-export class ProductComponent implements OnInit {
-handleChildData($event: Event) {
- console.log($event);
-}
+export class ProductComponent implements OnInit, OnDestroy {
+  private categorySubscription: Subscription | undefined;
 
   products: any[] = [];
   originalProducts: any[] = []; 
@@ -23,18 +23,30 @@ handleChildData($event: Event) {
   currentCategory: string | null = null; 
  
 
-  constructor(
+  constructor
+  (
     private productService: ProductService,
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit() {
-    // ✅ Ensure the product list is always fetched
     this.productService.getProducts().subscribe({
       next: (data: any) => {
         this.products = data;
         this.originalProducts = [...data]; 
+        
+        // Subscribe to category changes
+        this.categorySubscription = this.categoryService.currentCategory$.subscribe(category => {
+          if (category) {
+            this.toggleCategory(category);
+          } else {
+            // Reset to show all products when no category is selected
+            this.products = [...this.originalProducts];
+            this.currentCategory = null;
+          }
+        });
       },
       error: (err) => {
         console.error('Error fetching products:', err);
@@ -44,10 +56,13 @@ handleChildData($event: Event) {
     if (typeof window !== 'undefined' && window.localStorage) {
       this.jwtToken = localStorage.getItem('jwtToken');
     }
-    
   }
 
-  
+  ngOnDestroy() {
+    if (this.categorySubscription) {
+      this.categorySubscription.unsubscribe();
+    }
+  }
 
   isCategoryActive(category: string): boolean {
     return this.currentCategory === category;
