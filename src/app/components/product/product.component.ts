@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { ProductService } from '../../service/product.service';
 import { CurrencyPipe, NgClass, NgFor } from '@angular/common';
 import { CartItem, CartService } from '../../service/cart.service';
@@ -10,39 +11,36 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [NgFor, CurrencyPipe, NgClass, HomeComponent],
+  imports: [NgFor, CurrencyPipe, NgClass],
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'], // Fixed typo from styleUrl to styleUrls
+  styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit, OnDestroy {
   private categorySubscription: Subscription | undefined;
-
   products: any[] = [];
-  originalProducts: any[] = []; 
-  jwtToken: string | null = null; 
-  currentCategory: string | null = null; 
- 
+  originalProducts: any[] = [];
+  jwtToken: string | null = null;
+  currentCategory: string | null = null;
 
-  constructor
-  (
+  constructor(
     private productService: ProductService,
     private cartService: CartService,
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    @Inject(PLATFORM_ID) private platformId: object // Inject platform ID for SSR check
   ) {}
 
   ngOnInit() {
     this.productService.getProducts().subscribe({
       next: (data: any) => {
         this.products = data;
-        this.originalProducts = [...data]; 
-        
+        this.originalProducts = [...data];
+
         // Subscribe to category changes
         this.categorySubscription = this.categoryService.currentCategory$.subscribe(category => {
           if (category) {
             this.toggleCategory(category);
           } else {
-            // Reset to show all products when no category is selected
             this.products = [...this.originalProducts];
             this.currentCategory = null;
           }
@@ -53,7 +51,8 @@ export class ProductComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (typeof window !== 'undefined' && window.localStorage) {
+    // Check if running in browser before using localStorage
+    if (isPlatformBrowser(this.platformId)) {
       this.jwtToken = localStorage.getItem('jwtToken');
     }
   }
@@ -67,39 +66,35 @@ export class ProductComponent implements OnInit, OnDestroy {
   isCategoryActive(category: string): boolean {
     return this.currentCategory === category;
   }
-  // Toggle between categories
+
   toggleCategory(category: string) {
     if (this.currentCategory === category) {
-      // If the current category is already selected, reset to original products
-     
       this.products = [...this.originalProducts];
-      this.currentCategory = null; // Reset category
+      this.currentCategory = null;
     } else {
-      // Filter products based on the selected category
-     
       this.products = this.originalProducts.filter(
         (product) => product.category === category
       );
-      this.currentCategory = category; // Set the current category
+      this.currentCategory = category;
     }
     console.log(this.products);
   }
 
   addToCart(item: CartItem): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
+    if (isPlatformBrowser(this.platformId)) {
       this.cartService.addToCart(item);
     } else {
-      console.error('localStorage is not available');
+      console.error('localStorage is not available in SSR mode');
     }
   }
 
   buyNow(item: CartItem): void {
     if (this.jwtToken !== null) {
-      if (typeof window !== 'undefined' && window.localStorage) {
+      if (isPlatformBrowser(this.platformId)) {
         this.cartService.buyNow(item);
         this.router.navigate(['/checkout']);
       } else {
-        console.error('localStorage is not available');
+        console.error('localStorage is not available in SSR mode');
       }
     } else {
       alert('Please login to continue with Buy Now');
