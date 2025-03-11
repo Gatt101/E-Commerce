@@ -11,7 +11,7 @@ import { UserService } from '../../service/user.service';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent {
-  orders = signal<any[]>([]); // ✅ Using Signal for Reactivity
+  orders = signal<any[]>([]);
   userId = signal<number | null>(null);
   name = signal<string | null>(null);
   email = signal<string | null>(null);

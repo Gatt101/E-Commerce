@@ -31,9 +31,9 @@
                         <tbody class="text-center">
                             <tr *ngFor="let order of orders()" class="align-middle">
                                 <td class="p-3 fw-semibold">{{ order.id }}</td>
-                                <td class="p-3 text-start">{{ order.product_name }}</td>
+                                <td class="p-3 text-start">{{ order.productName}}</td>
                                 <td class="p-3 fw-bold text-success">{{ order.price | currency:'INR' }}</td>
-                                <td class="p-3 text-secondary">{{ order.viewed_at | date:'medium' }}</td>
+                                <td class="p-3 text-secondary">{{ order.viewedAt | date:'medium' }}</td>
                                 <td class="p-3 fw-semibold">{{ order.quantity }}</td>
                             </tr>
                         </tbody>
