@@ -16,11 +16,12 @@ import { UserService } from '../../service/user.service';
 })
 export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
+  isBrowser: boolean;
 
   // ✅ Using Signals from `CartService`
-  cartItems = this.cartService.getCartItems(); // Directly get the signal
+  cartItems = this.cartService.getCartItems(); // Signal-based cart items
   buyNowItem = this.cartService.getBuyNowItem(); // Signal-based buy now item
-  userId = signal<number | null>(null); // ✅ Reactive user ID
+  userId = signal<number | null>(null); // ✅ Signal for user ID
 
   constructor(
     private orderService: OrderService,
@@ -30,6 +31,8 @@ export class CheckoutComponent implements OnInit {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+
     this.checkoutForm = this.formBuilder.group({
       fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -44,16 +47,18 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.userService.getUser().subscribe(
-        (response) => {
-          console.log('User Data:', response);
-          this.userId.set(response?.id || null);
-        },
-        (error) => {
-          console.error('Error fetching user ID:', error);
-        }
-      );
+    if (this.isBrowser) {
+      setTimeout(() => {
+        this.userService.getUser().subscribe(
+          (response) => {
+            console.log('User Data:', response);
+            this.userId.set(response?.id || null);
+          },
+          (error) => {
+            console.error('Error fetching user ID:', error);
+          }
+        );
+      }, 0); // ✅ Delay execution to prevent conflicts
     }
   }
 

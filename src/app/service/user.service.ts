@@ -2,31 +2,36 @@ import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  apiurl = `${environment.apiurl}/me`;
+  private apiurl = `${environment.apiurl}/me`;
+  private isBrowser: boolean;
 
   constructor(
     private httpClient: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: any // Injects platform info
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
+  /**
+   * ✅ Fetches user data (Only in browser mode)
+   */
   getUser(): Observable<any> {
-    if (!isPlatformBrowser(this.platformId)) {
-      console.error('Error: Not running in a browser environment.');
-      return throwError(() => new Error('Not running in the browser.'));
+    if (!this.isBrowser) {
+      console.warn('Skipping getUser(): Running in SSR mode.');
+      return of(null); // ✅ Prevents SSR crashes
     }
 
-    const jwtToken = localStorage.getItem('jwtToken');
-
+    const jwtToken = this.getToken();
     if (!jwtToken) {
-      console.error('Error: JWT Token not found in localStorage.');
-      return throwError(() => new Error('JWT Token is missing.'));
+      console.warn('JWT Token not found in browser storage.');
+      return of(null); // ✅ Prevents UI from breaking
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${jwtToken}`);
@@ -37,5 +42,16 @@ export class UserService {
         return throwError(() => new Error('Failed to fetch user data.'));
       })
     );
+  }
+
+  /**
+   * ✅ Retrieves JWT token safely (Only in browser mode)
+   */
+  private getToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null; // ✅ Prevents SSR access
+    }
+
+    return window.sessionStorage.getItem('jwtToken') || null;
   }
 }

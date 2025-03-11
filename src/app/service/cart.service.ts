@@ -1,4 +1,5 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, Signal, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface CartItem {
   id: number;
@@ -8,24 +9,47 @@ export interface CartItem {
   price: number;
   quantity: number;
 }
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  cartItems = signal<CartItem[]>(this.loadCart());
+  private isBrowser: boolean;
+  cartItems = signal<CartItem[]>([]);
   private buyNowItem = signal<CartItem | null>(null);
 
-  private loadCart(): CartItem[] {
-    if (typeof localStorage !== 'undefined') {
-      const savedCart = localStorage.getItem('cart');
-      return savedCart ? JSON.parse(savedCart) : [];
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (this.isBrowser) {
+      this.cartItems.set(this.loadCart());
     }
-    return [];
   }
 
+  /**
+   * ✅ Load cart from `sessionStorage` safely (Only in browser)
+   */
+  private loadCart(): CartItem[] {
+    if (!this.isBrowser) return [];
+
+    try {
+      const savedCart = sessionStorage.getItem('cart'); // ✅ Uses sessionStorage
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error('Error loading cart from sessionStorage:', error);
+      return [];
+    }
+  }
+
+  /**
+   * ✅ Save cart to `sessionStorage` safely (Only in browser)
+   */
   private saveCart(items: CartItem[]): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('cart', JSON.stringify(items));
+    if (!this.isBrowser) return;
+
+    try {
+      sessionStorage.setItem('cart', JSON.stringify(items)); // ✅ Uses sessionStorage
+    } catch (error) {
+      console.error('Error saving cart to sessionStorage:', error);
     }
   }
 
@@ -37,42 +61,66 @@ export class CartService {
     return this.buyNowItem;
   }
 
+  /**
+   * ✅ Buy Now Function (Does not affect cart)
+   */
   buyNow(item: CartItem): void {
     this.buyNowItem.set({ ...item, quantity: 1 });
   }
 
+  /**
+   * ✅ Add Item to Cart (Handles duplicates)
+   */
   addToCart(item: CartItem): void {
     this.cartItems.update((items) => {
       const existingItem = items.find(i => i.id === item.id);
+      let updatedItems;
+      
       if (existingItem) {
-        return items.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
+        updatedItems = items.map(i => 
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      } else {
+        const newItem = { ...item, quantity: 1 };
+        updatedItems = [...items, newItem];
       }
-      const newItem = { ...item, quantity: 1 };
-      const updatedItems = [...items, newItem];
+
       this.saveCart(updatedItems);
       return updatedItems;
     });
   }
 
+  /**
+   * ✅ Remove Item from Cart
+   */
   removeFromCart(item: CartItem): void {
     this.cartItems.update((items) => {
-      const updatedItems = items.filter((i) => i.id !== item.id);
+      const updatedItems = items.filter(i => i.id !== item.id);
       this.saveCart(updatedItems);
       return updatedItems;
     });
   }
 
+  /**
+   * ✅ Clear Entire Cart
+   */
   clearCart(): void {
     this.cartItems.set([]);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('cart');
+    if (this.isBrowser) {
+      sessionStorage.removeItem('cart'); // ✅ Uses sessionStorage
     }
   }
 
+  /**
+   * ✅ Clear Buy Now Item (For Immediate Purchase)
+   */
   clearBuyNowItem(): void {
-    this.buyNowItem.set(null); // Clear the Buy Now item
+    this.buyNowItem.set(null);
   }
 
+  /**
+   * ✅ Calculate Total Cart Price
+   */
   getTotal(): number {
     return this.cartItems().reduce((total, item) => total + (item.price * item.quantity), 0);
   }

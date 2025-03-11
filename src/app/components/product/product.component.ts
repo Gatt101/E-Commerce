@@ -4,7 +4,6 @@ import { ProductService } from '../../service/product.service';
 import { CurrencyPipe, NgClass, NgFor } from '@angular/common';
 import { CartItem, CartService } from '../../service/cart.service';
 import { Router } from '@angular/router';
-import { HomeComponent } from "../home/home.component";
 import { CategoryService } from '../../service/category.service';
 import { Subscription } from 'rxjs';
 
@@ -21,6 +20,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   originalProducts: any[] = [];
   jwtToken: string | null = null;
   currentCategory: string | null = null;
+  isBrowser: boolean;
 
   constructor(
     private productService: ProductService,
@@ -28,32 +28,33 @@ export class ProductComponent implements OnInit, OnDestroy {
     private router: Router,
     private categoryService: CategoryService,
     @Inject(PLATFORM_ID) private platformId: object // Inject platform ID for SSR check
-  ) {}
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit() {
-    this.productService.getProducts().subscribe({
-      next: (data: any) => {
-        this.products = data;
-        this.originalProducts = [...data];
+    if (this.isBrowser) {
+      this.productService.getProducts().subscribe({
+        next: (data: any) => {
+          this.products = data;
+          this.originalProducts = [...data];
 
-        // Subscribe to category changes
-        this.categorySubscription = this.categoryService.currentCategory$.subscribe(category => {
-          if (category) {
-            this.toggleCategory(category);
-          } else {
-            this.products = [...this.originalProducts];
-            this.currentCategory = null;
-          }
-        });
-      },
-      error: (err) => {
-        console.error('Error fetching products:', err);
-      }
-    });
+          // Subscribe to category changes
+          this.categorySubscription = this.categoryService.currentCategory$.subscribe(category => {
+            if (category) {
+              this.toggleCategory(category);
+            } else {
+              this.products = [...this.originalProducts];
+              this.currentCategory = null;
+            }
+          });
+        },
+        error: (err) => {
+          console.error('Error fetching products:', err);
+        }
+      });
 
-    // Check if running in browser before using localStorage
-    if (isPlatformBrowser(this.platformId)) {
-      this.jwtToken = localStorage.getItem('jwtToken');
+      this.jwtToken = this.getToken(); // ✅ Safe JWT token retrieval
     }
   }
 
@@ -81,24 +82,34 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   addToCart(item: CartItem): void {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.isBrowser) {
       this.cartService.addToCart(item);
     } else {
-      console.error('localStorage is not available in SSR mode');
+      console.error('Cart operations are not available in SSR mode');
     }
   }
 
   buyNow(item: CartItem): void {
     if (this.jwtToken !== null) {
-      if (isPlatformBrowser(this.platformId)) {
+      if (this.isBrowser) {
         this.cartService.buyNow(item);
         this.router.navigate(['/checkout']);
       } else {
-        console.error('localStorage is not available in SSR mode');
+        console.error('Cart operations are not available in SSR mode');
       }
     } else {
       alert('Please login to continue with Buy Now');
       this.router.navigate(['/login']);
     }
+  }
+
+  /**
+   * ✅ Safe method to retrieve JWT token (Prevents SSR issues)
+   */
+  private getToken(): string | null {
+    if (!this.isBrowser) {
+      return null; 
+    }
+    return sessionStorage.getItem('jwtToken') || null; 
   }
 }
