@@ -26,7 +26,7 @@ export class RegisterComponent {
     if (this.userForm.valid) {
       console.log(this.userForm.value);
       // send data to server
-      this.httpClient.post('http://localhost:8080/register', this.userForm.value)
+      this.httpClient.post('https://e-commerce-alpha-five-96.vercel.app/register', this.userForm.value)
         .subscribe(
           (response) => {
             console.log('Registration successful:', response);
