@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   userForm!: FormGroup;
-
   constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private router: Router) {
     this.userForm = this.formBuilder.group({
       username: ['', [Validators.required]],
@@ -26,7 +25,7 @@ export class RegisterComponent {
     if (this.userForm.valid) {
       console.log(this.userForm.value);
       // send data to server
-      this.httpClient.post('https://e-commerce-alpha-five-96.vercel.app/register', this.userForm.value)
+      this.httpClient.post('https://ecommerce-backend-6pfd.onrender.com/register', this.userForm.value)
         .subscribe(
           (response) => {
             console.log('Registration successful:', response);

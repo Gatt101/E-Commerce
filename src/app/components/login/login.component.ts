@@ -35,7 +35,7 @@ export class LoginComponent {
     }
 
     // Send login data to server
-    this.httpClient.post('https://e-commerce-alpha-five-96.vercel.app/login', this.userForm.value, { responseType: 'text' })
+    this.httpClient.post('https://ecommerce-backend-6pfd.onrender.com/login', this.userForm.value, { responseType: 'text' })
       .subscribe(
         (data: string) => {
           console.log('JWT Token:', data);
