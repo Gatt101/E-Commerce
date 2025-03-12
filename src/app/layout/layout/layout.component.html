@@ -7,14 +7,45 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <form class="d-flex mx-auto search-form">
+        <form class="d-flex mx-auto search-form position-relative" (submit)="onSearchSubmit($event)">
           <div class="input-group">
-            <input class="form-control search-input" type="search" placeholder="Search for products..." aria-label="Search">
+            <input 
+              class="form-control search-input" 
+              type="search" 
+              placeholder="Search for products..." 
+              aria-label="Search"
+              [(ngModel)]="searchInputValue"
+              (input)="onSearchInput($event)"
+              (blur)="hideSearchResults()"
+              name="searchQuery"
+              autocomplete="off"
+            />
             <button class="btn search-btn" type="submit">
               <i class="bi bi-search"></i>
             </button>
           </div>
+          
+          <!-- Search Results Dropdown -->
+          <div class="search-results-dropdown" *ngIf="showSearchResults() && searchResults().length > 0">
+            <div class="list-group">
+              <button 
+                type="button"
+                class="list-group-item list-group-item-action" 
+                *ngFor="let product of searchResults()"
+                (click)="selectProduct(product)"
+              >
+                <div class="d-flex align-items-center">
+                  <img [src]="product.image" alt="product" class="search-result-img me-2">
+                  <div>
+                    <h6 class="mb-0">{{product.title}}</h6>
+                    <small class="text-muted">{{product.category}}</small>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
         </form>
+        
 
         <ul class="navbar-nav ms-auto nav-links">
           <li class="nav-item"> 

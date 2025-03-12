@@ -5,7 +5,7 @@ import { CurrencyPipe, NgClass, NgFor } from '@angular/common';
 import { CartItem, CartService } from '../../service/cart.service';
 import { Router } from '@angular/router';
 import { CategoryService } from '../../service/category.service';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit, OnDestroy {
-  private categorySubscription: Subscription | undefined;
+  private subscriptions: Subscription[] = [];
   products: any[] = [];
   originalProducts: any[] = [];
   jwtToken: string | null = null;
@@ -27,41 +27,59 @@ export class ProductComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private router: Router,
     private categoryService: CategoryService,
-    @Inject(PLATFORM_ID) private platformId: object // Inject platform ID for SSR check
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit() {
     if (this.isBrowser) {
-      this.productService.getProducts().subscribe({
-        next: (data: any) => {
-          this.products = data;
-          this.originalProducts = [...data];
-
-          // Subscribe to category changes
-          this.categorySubscription = this.categoryService.currentCategory$.subscribe(category => {
-            if (category) {
-              this.toggleCategory(category);
-            } else {
-              this.products = [...this.originalProducts];
-              this.currentCategory = null;
-            }
-          });
+      // Combine category and search query observables
+      const subscription = combineLatest([
+        this.categoryService.currentCategory$,
+        this.productService.searchQuery$,
+        this.productService.getProducts()
+      ]).subscribe({
+        next: ([category, searchQuery, products]) => {
+          this.originalProducts = products;
+          
+          // Apply filters
+          let filteredProducts = [...products];
+          
+          // Apply search filter
+          if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            filteredProducts = filteredProducts.filter(product =>
+              product.title.toLowerCase().includes(query) ||
+              product.description.toLowerCase().includes(query) ||
+              product.category.toLowerCase().includes(query)
+            );
+          }
+          
+          // Apply category filter
+          if (category) {
+            filteredProducts = filteredProducts.filter(
+              product => product.category === category
+            );
+            this.currentCategory = category;
+          } else {
+            this.currentCategory = null;
+          }
+          
+          this.products = filteredProducts;
         },
         error: (err) => {
           console.error('Error fetching products:', err);
         }
       });
 
-      this.jwtToken = this.getToken(); // ✅ Safe JWT token retrieval
+      this.subscriptions.push(subscription);
+      this.jwtToken = this.getToken();
     }
   }
 
   ngOnDestroy() {
-    if (this.categorySubscription) {
-      this.categorySubscription.unsubscribe();
-    }
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   isCategoryActive(category: string): boolean {
@@ -103,9 +121,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * ✅ Safe method to retrieve JWT token (Prevents SSR issues)
-   */
+  
   private getToken(): string | null {
     if (!this.isBrowser) {
       return null; 

@@ -185,3 +185,41 @@
     margin-right: 0.3rem;
     margin-bottom: 0.5rem;
 }
+
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-result-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.list-group-item {
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+}
+
+.list-group-item:first-child {
+  border-top: none;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
