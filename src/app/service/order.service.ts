@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = `${environment.apiurl}/Orders`; 
+  private apiUrl = `${environment.apiurl}/Orders`;
   private isBrowser: boolean;
 
   constructor(
@@ -19,12 +19,12 @@ export class OrderService {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  /** ✅ Fetch orders from the backend */
-  getOrders(id: number): Observable<any[]> {
+  /** Fetch orders by user ID */
+  getOrders(userId: string): Observable<any[]> {
     const headers = this.getAuthHeaders();
-    if (!headers) return of([]); // ✅ Prevents errors in SSR mode (Returns empty array)
+    if (!headers) return of([]);
 
-    return this.http.get<any[]>(`${this.apiUrl}/${id}`, { headers }).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}/${encodeURIComponent(userId)}`, { headers }).pipe(
       catchError(error => {
         console.error('Error fetching orders:', error);
         return throwError(() => error);
@@ -32,21 +32,18 @@ export class OrderService {
     );
   }
 
-  /** ✅ Add a new order */
+  /** Add a single order */
   addOrder(order: any): Observable<any> {
     const headers = this.getAuthHeaders();
     if (!headers) return throwError(() => new Error('User is not authenticated'));
 
     const requestBody = {
-      user: { id: order.user_id },  
-      productId: order.product_id,
-      productName: order.product_name,
+      productId: order.productId,
+      productName: order.productName,
       price: order.price,
-      quantity: order.quantity,
-      viewedAt: order.viewed_at || new Date().toISOString()
+      userId: order.userId,
+      viewedAt: order.viewedAt || new Date().toISOString()
     };
-
-    console.log("Final Order Payload Sent:", requestBody);
 
     return this.http.post<any>(this.apiUrl, requestBody, { headers }).pipe(
       catchError(error => {
@@ -56,23 +53,20 @@ export class OrderService {
     );
   }
 
-  /** ✅ Add multiple orders */
+  /** Add multiple orders */
   addMultipleOrders(orders: any[]): Observable<any[]> {
-    const newApiUrl = `${this.apiUrl}/multiple`;
     const headers = this.getAuthHeaders();
     if (!headers) return throwError(() => new Error('User is not authenticated'));
 
-    console.log("Final Order Payload Sent:", orders);
     const requestBody = orders.map(order => ({
-      user: { id: order.user_id },
-      productId: order.product_id,
-      productName: order.product_name,
+      productId: order.productId,
+      productName: order.productName,
       price: order.price,
-      quantity: order.quantity,
-      viewedAt: order.viewed_at || new Date().toISOString()
+      userId: order.userId,
+      viewedAt: order.viewedAt || new Date().toISOString()
     }));
 
-    return this.http.post<any[]>(newApiUrl, requestBody, { headers }).pipe(
+    return this.http.post<any[]>(`${this.apiUrl}/multiple`, requestBody, { headers }).pipe(
       catchError(error => {
         console.error('Error adding multiple orders:', error);
         return throwError(() => error);
@@ -80,25 +74,25 @@ export class OrderService {
     );
   }
 
-  /** ✅ Helper function to get authentication headers safely */
+  /** Helper function to get authentication headers */
   private getAuthHeaders(): HttpHeaders | null {
     if (!this.isBrowser) {
       console.warn('Skipping authentication headers: Running in SSR mode.');
-      return null; // ✅ Prevents SSR crashes
+      return null;
     }
 
     const jwtToken = this.getToken();
     if (!jwtToken) {
       console.error('JWT Token not found in sessionStorage');
-      return null; // ✅ Prevents request from executing without auth
+      return null;
     }
 
     return new HttpHeaders().set('Authorization', `Bearer ${jwtToken}`);
   }
 
-  /** ✅ Safe method to retrieve JWT token (Only in browser) */
+  /** Retrieve JWT token safely */
   private getToken(): string | null {
-    if (!this.isBrowser) return null; // ✅ Prevents SSR access issues
-    return sessionStorage.getItem('jwtToken') || null; 
+    if (!this.isBrowser) return null;
+    return sessionStorage.getItem('jwtToken') || null;
   }
 }

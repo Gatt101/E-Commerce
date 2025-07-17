@@ -36,14 +36,14 @@ export class OrdersComponent {
             this.email.set(response?.email || null);
             this.userId.set(response?.id || null);
 
-            if (this.userId()) {
-              this.loadOrders(); // ✅ Call `loadOrders()` only after `userId` is set
+            if (this.name()) {
+              this.loadOrders(); // ✅ Call `loadOrders()` only after `name` is set
             } else {
-              console.error('User ID is null. Cannot load orders.');
+              console.error('User name is null. Cannot load orders.');
             }
           },
           (error) => {
-            console.error('Error fetching user ID:', error);
+            console.error('Error fetching user:', error);
           }
         );
       }, 0); // ✅ Delay execution to prevent conflicts in SSR
@@ -51,12 +51,12 @@ export class OrdersComponent {
   }
 
   loadOrders() {
-    if (!this.userId()) {
-      console.error('User ID is not available, skipping order fetch.');
+    if (!this.name()) {
+      console.error('User name is not available, skipping order fetch.');
       return;
     }
 
-    this.orderService.getOrders(this.userId()!).subscribe({
+    this.orderService.getOrders(this.name()!).subscribe({
       next: (data) => {
         this.orders.set(data); // ✅ Using Signal to update UI reactively
         console.log('Orders loaded:', this.orders());

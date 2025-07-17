@@ -25,9 +25,7 @@ export class CartService {
     }
   }
 
-  /**
-   * ✅ Load cart from `sessionStorage` safely (Only in browser)
-   */
+  
   private loadCart(): CartItem[] {
     if (!this.isBrowser) return [];
 

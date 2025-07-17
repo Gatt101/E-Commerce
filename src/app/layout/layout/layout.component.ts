@@ -23,23 +23,23 @@ import { CategoryService } from '../../service/category.service';
 export class LayoutComponent implements OnInit {
   cartItems = this.cartService.getCartItems();
   count = computed(() => this.cartItems().length);
-  
+
   searchText = signal<string>('');
   searchInputValue = '';
   products = signal<any[]>([]);
   showSearchResults = signal<boolean>(false);
-  
+
   searchResults = computed(() => {
     const query = this.searchText().toLowerCase().trim();
     if (!query) return [];
-    return this.products().filter(item => 
+    return this.products().filter(item =>
       item.title.toLowerCase().includes(query) ||
       item.category.toLowerCase().includes(query)
-    ).slice(0, 5); // Limit to 5 results
+    ).slice(0, 5);
   });
 
   constructor(
-    private cartService: CartService, 
+    private cartService: CartService,
     private productService: ProductService,
     private router: Router,
     private categoryService: CategoryService

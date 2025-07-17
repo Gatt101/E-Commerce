@@ -24,8 +24,8 @@ export class RegisterComponent {
   onSubmit() {
     if (this.userForm.valid) {
       console.log(this.userForm.value);
-      // send data to server
-      this.httpClient.post('https://ecommerce-backend-6pfd.onrender.com/register', this.userForm.value)
+      // send data to server https://ecommerce-backend-6pfd.onrender.com/register
+      this.httpClient.post('http://localhost:8080/register', this.userForm.value)
         .subscribe(
           (response) => {
             console.log('Registration successful:', response);

@@ -34,8 +34,8 @@ export class LoginComponent {
       console.log(this.userForm.value);
     }
 
-    // Send login data to server
-    this.httpClient.post('https://ecommerce-backend-6pfd.onrender.com/login', this.userForm.value, { responseType: 'text' })
+    // Send login data to server https://ecommerce-backend-6pfd.onrender.com/login
+    this.httpClient.post('http://localhost:8080/login', this.userForm.value, { responseType: 'text' })
       .subscribe(
         (data: string) => {
           console.log('JWT Token:', data);
@@ -59,7 +59,7 @@ export class LoginComponent {
    */
   private saveToken(token: string): void {
     if (this.isBrowser) {
-      sessionStorage.setItem('jwtToken', token); 
+      sessionStorage.setItem('jwtToken', token);
     }
   }
 }
