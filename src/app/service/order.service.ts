@@ -1,75 +1,76 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment.development';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { environment } from '../../environments/environment.production';
 import { isPlatformBrowser } from '@angular/common';
+import { UserService } from './user.service';
+
+export interface Order {
+  productId: string;
+  productName: string;
+  price: number;
+  quantity: number;
+  viewedAt: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = `${environment.apiurl}/Orders`;
+  private apiUrl = `${environment.apiurl}/orders`;
   private isBrowser: boolean;
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private userService: UserService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  /** Fetch orders by user ID */
-  getOrders(userId: string): Observable<any[]> {
-    const headers = this.getAuthHeaders();
-    if (!headers) return of([]);
+ 
+getAllOrders(): Observable<Order[]> {
+  const headers = this.getAuthHeaders();
+  if (!headers) return throwError(() => new Error('User is not authenticated'));
 
-    return this.http.get<any[]>(`${this.apiUrl}/${encodeURIComponent(userId)}`, { headers }).pipe(
-      catchError(error => {
-        console.error('Error fetching orders:', error);
-        return throwError(() => error);
-      })
-    );
-  }
+  // Use userService.getUser() to get the user info (calls /me)
+  return this.userService.getUser().pipe(
+    switchMap(user => {
+      if (!user || !user.id) {
+        return throwError(() => new Error('User ID not found in /me response'));
+      }
+      return this.http.get<Order[]>(`${this.apiUrl}/${user.id}`, { headers });
+    }),
+    catchError(error => {
+      console.error('Error fetching orders:', error);
+      return throwError(() => new Error('Failed to fetch orders. Please try again.'));
+    })
+  );
+}
 
   /** Add a single order */
-  addOrder(order: any): Observable<any> {
+  addOrder(order: Order): Observable<Order> {
     const headers = this.getAuthHeaders();
     if (!headers) return throwError(() => new Error('User is not authenticated'));
 
-    const requestBody = {
-      productId: order.productId,
-      productName: order.productName,
-      price: order.price,
-      userId: order.userId,
-      viewedAt: order.viewedAt || new Date().toISOString()
-    };
-
-    return this.http.post<any>(this.apiUrl, requestBody, { headers }).pipe(
+    return this.http.post<Order>(`${this.apiUrl}/single`, order, { headers }).pipe(
       catchError(error => {
         console.error('Error adding order:', error);
-        return throwError(() => error);
+        return throwError(() => new Error('Failed to add order. Please try again.'));
       })
     );
   }
 
   /** Add multiple orders */
-  addMultipleOrders(orders: any[]): Observable<any[]> {
+  addMultipleOrders(orders: Order[]): Observable<Order[]> {
     const headers = this.getAuthHeaders();
     if (!headers) return throwError(() => new Error('User is not authenticated'));
 
-    const requestBody = orders.map(order => ({
-      productId: order.productId,
-      productName: order.productName,
-      price: order.price,
-      userId: order.userId,
-      viewedAt: order.viewedAt || new Date().toISOString()
-    }));
-
-    return this.http.post<any[]>(`${this.apiUrl}/multiple`, requestBody, { headers }).pipe(
+    return this.http.post<Order[]>(`${this.apiUrl}/multiple`, orders, { headers }).pipe(
       catchError(error => {
         console.error('Error adding multiple orders:', error);
-        return throwError(() => error);
+        return throwError(() => new Error('Failed to add multiple orders. Please try again.'));
       })
     );
   }

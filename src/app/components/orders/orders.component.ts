@@ -1,6 +1,6 @@
-import { Component, Inject, PLATFORM_ID, signal, computed } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, computed, signal, OnInit } from '@angular/core';
 import { isPlatformBrowser, CurrencyPipe, NgFor, NgIf, DatePipe } from '@angular/common';
-import { OrderService } from '../../service/order.service';
+import { OrderService, Order } from '../../service/order.service';
 import { UserService } from '../../service/user.service';
 
 @Component({
@@ -10,8 +10,8 @@ import { UserService } from '../../service/user.service';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css']
 })
-export class OrdersComponent {
-  orders = signal<any[]>([]);
+export class OrdersComponent implements OnInit {
+  orders = signal<Order[]>([]);
   userId = signal<number | null>(null);
   name = signal<string | null>(null);
   email = signal<string | null>(null);
@@ -25,40 +25,33 @@ export class OrdersComponent {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngOnInit() {
-    // ✅ Ensure API call runs only in the browser
-    if (this.isBrowser) {
-      setTimeout(() => {
-        this.userService.getUser().subscribe(
-          (response) => {
-            console.log('User Data:', response);
-            this.name.set(response?.name || null);
-            this.email.set(response?.email || null);
-            this.userId.set(response?.id || null);
+  ngOnInit(): void {
+    if (!this.isBrowser) return;
 
-            if (this.name()) {
-              this.loadOrders(); // ✅ Call `loadOrders()` only after `name` is set
-            } else {
-              console.error('User name is null. Cannot load orders.');
-            }
-          },
-          (error) => {
-            console.error('Error fetching user:', error);
+    setTimeout(() => {
+      this.userService.getUser().subscribe({
+        next: (response: { id: number; name: string; email: string }) => {
+          this.name.set(response.name || null);
+          this.email.set(response.email || null);
+          this.userId.set(response.id || null);
+
+          if (this.name()) {
+            this.loadOrders();
+          } else {
+            console.error('User name is null. Cannot load orders.');
           }
-        );
-      }, 0); // ✅ Delay execution to prevent conflicts in SSR
-    }
+        },
+        error: (err) => {
+          console.error('Error fetching user:', err);
+        }
+      });
+    }, 0);
   }
 
-  loadOrders() {
-    if (!this.name()) {
-      console.error('User name is not available, skipping order fetch.');
-      return;
-    }
-
-    this.orderService.getOrders(this.name()!).subscribe({
-      next: (data) => {
-        this.orders.set(data); // ✅ Using Signal to update UI reactively
+  loadOrders(): void {
+    this.orderService.getAllOrders().subscribe({
+      next: (data: Order[]) => {
+        this.orders.set(data);
         console.log('Orders loaded:', this.orders());
       },
       error: (err) => {
@@ -67,6 +60,5 @@ export class OrdersComponent {
     });
   }
 
-  // ✅ Computed Signal: Auto-updates when `orders` changes
   orderCount = computed(() => this.orders().length);
 }

@@ -1,46 +1,46 @@
 <div class="container-fluid">
-    <!-- User Information -->
-    <div class="container mt-5 py-4 px-5 border rounded-4 shadow bg-light border-primary">
-        <h1 class="text-start fw-bold text-primary">Welcome {{ name() }}</h1>
-        <p class="text-start fw-semibold text-secondary fs-5">{{ email() }}</p>
-    </div>
+  <!-- User Information -->
+  <div class="container mt-5 py-4 px-5 border rounded-4 shadow bg-light border-primary">
+    <h1 class="text-start fw-bold text-primary">Welcome {{ name() }}</h1>
+    <p class="text-start fw-semibold text-secondary fs-5">{{ email() }}</p>
+  </div>
 
-    <!-- Orders Section -->
-    <div class="container bg-light mt-4 border rounded-4 shadow-sm p-4">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-primary fw-bold">Your Orders</h2>
-                
-                <!-- Show message when no orders exist -->
-                <div *ngIf="orders().length === 0" class="text-center mt-3">
-                    <p class="text-secondary fs-5">You have no orders yet.</p>
-                </div>
+  <!-- Orders Section -->
+  <div class="container bg-light mt-4 border rounded-4 shadow-sm p-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="text-primary fw-bold">Your Orders</h2>
 
-                <!-- Orders Table -->
-                <div *ngIf="orders().length > 0" class="table-responsive mt-3">
-                    <table class="table table-hover border rounded-3">
-                        <thead class="table-primary text-center">
-                            <tr>
-                                <th class="p-3">Order ID</th>
-                                <th class="p-3">Product Name</th>
-                                <th class="p-3">Total Price</th>  
-                                <th class="p-3">Date</th>
-                                <th class="p-3">Quantity</th>
-                            </tr>   
-                        </thead>
-                        <tbody class="text-center">
-                            <tr *ngFor="let order of orders()" class="align-middle">
-                                <td class="p-3 fw-semibold">{{ order.id }}</td>
-                                <td class="p-3 text-start">{{ order.productName}}</td>
-                                <td class="p-3 fw-bold text-success">{{ order.price | currency:'INR' }}</td>
-                                <td class="p-3 text-secondary">{{ order.viewedAt | date:'medium' }}</td>
-                                <td class="p-3 fw-semibold">{{ order.quantity }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
+        <!-- Show message when no orders exist -->
+        <div *ngIf="orders().length === 0" class="text-center mt-3">
+          <p class="text-secondary fs-5">You have no orders yet.</p>
         </div>
+
+        <!-- Orders Table -->
+        <div *ngIf="orders().length > 0" class="table-responsive mt-3">
+          <table class="table table-hover border rounded-3">
+            <thead class="table-primary text-center">
+            <tr>
+              <th class="p-3">Product ID</th>
+              <th class="p-3">Product Name</th>
+              <th class="p-3">Total Price</th>
+              <th class="p-3">Date</th>
+              <th class="p-3">Quantity</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            <tr *ngFor="let order of orders()" class="align-middle">
+              <td class="p-3 fw-semibold">{{ order.productId }}</td>
+              <td class="p-3 text-start">{{ order.productName }}</td>
+              <td class="p-3 fw-bold text-success">{{ order.price | currency:'INR' }}</td>
+              <td class="p-3 text-secondary">{{ order.viewedAt | date:'medium' }}</td>
+              <td class="p-3 fw-semibold">{{ order.quantity }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
     </div>
+  </div>
 </div>
