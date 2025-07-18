@@ -64,7 +64,8 @@ export class CheckoutComponent implements OnInit {
           productName: buyNow.title,
           price: buyNow.price,
           quantity: buyNow.quantity,
-          viewedAt: new Date().toISOString()
+          viewedAt: new Date().toISOString(),
+          image: buyNow.image
         };
 
         this.orderService.addOrder(orderData).subscribe(
@@ -85,7 +86,8 @@ export class CheckoutComponent implements OnInit {
           productName: item.title,
           price: item.price,
           quantity: item.quantity,
-          viewedAt: new Date().toISOString()
+          viewedAt: new Date().toISOString(),
+          image: item.image
         }));
 
         this.orderService.addMultipleOrders(orderData).subscribe(

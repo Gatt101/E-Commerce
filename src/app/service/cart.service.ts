@@ -3,8 +3,8 @@ import { isPlatformBrowser } from '@angular/common';
 
 export interface CartItem {
   id: number;
-  image: any;
   title: string;
+  image : string;
   description: string;
   price: number;
   quantity: number;

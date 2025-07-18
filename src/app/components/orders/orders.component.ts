@@ -15,6 +15,7 @@ export class OrdersComponent implements OnInit {
   userId = signal<number | null>(null);
   name = signal<string | null>(null);
   email = signal<string | null>(null);
+  image = signal<string | null>(null);
   isBrowser: boolean;
 
   constructor(
@@ -30,10 +31,12 @@ export class OrdersComponent implements OnInit {
 
     setTimeout(() => {
       this.userService.getUser().subscribe({
-        next: (response: { id: number; name: string; email: string }) => {
+        next: (response: { id: number; name: string; email: string, image: string }) => {
           this.name.set(response.name || null);
           this.email.set(response.email || null);
           this.userId.set(response.id || null);
+          this.image.set(response.image || null);
+         
 
           if (this.name()) {
             this.loadOrders();

@@ -12,6 +12,7 @@ export interface Order {
   price: number;
   quantity: number;
   viewedAt: string;
+  image: string;
 }
 
 @Injectable({
@@ -21,25 +22,27 @@ export class OrderService {
   private apiUrl = `${environment.apiurl}/orders`;
   private isBrowser: boolean;
 
-  constructor(
-    private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: object,
-    private userService: UserService
-  ) {
+  constructor(private http: HttpClient,
+    @Inject(PLATFORM_ID)private platformId: object,
+    private userService: UserService ) 
+  {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
  
-getAllOrders(): Observable<Order[]> {
+
+getAllOrders(): Observable<Order[]> 
+{
   const headers = this.getAuthHeaders();
   if (!headers) return throwError(() => new Error('User is not authenticated'));
-
-  // Use userService.getUser() to get the user info (calls /me)
-  return this.userService.getUser().pipe(
+  return this.userService.getUser().pipe
+  (
     switchMap(user => {
-      if (!user || !user.id) {
-        return throwError(() => new Error('User ID not found in /me response'));
+      if (!user || !user.id) 
+      {
+        return throwError(() => new Error('User ID (MongoDB _id) not found in /me response'));
       }
+      console.log(user);
       return this.http.get<Order[]>(`${this.apiUrl}/${user.id}`, { headers });
     }),
     catchError(error => {
@@ -49,8 +52,9 @@ getAllOrders(): Observable<Order[]> {
   );
 }
 
-  /** Add a single order */
-  addOrder(order: Order): Observable<Order> {
+  
+  addOrder(order: Order): Observable<Order> 
+  {
     const headers = this.getAuthHeaders();
     if (!headers) return throwError(() => new Error('User is not authenticated'));
 
@@ -62,8 +66,9 @@ getAllOrders(): Observable<Order[]> {
     );
   }
 
-  /** Add multiple orders */
-  addMultipleOrders(orders: Order[]): Observable<Order[]> {
+  
+  addMultipleOrders(orders: Order[]): Observable<Order[]> 
+  {
     const headers = this.getAuthHeaders();
     if (!headers) return throwError(() => new Error('User is not authenticated'));
 
