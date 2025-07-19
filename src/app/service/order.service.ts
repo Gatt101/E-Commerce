@@ -46,7 +46,7 @@ getAllOrders(): Observable<Order[]>
       return this.http.get<Order[]>(`${this.apiUrl}/${user.id}`, { headers });
     }),
     catchError(error => {
-      console.error('Error fetching orders:', error);
+      // console.error('Error fetching orders:', error);
       return throwError(() => new Error('Failed to fetch orders. Please try again.'));
     })
   );
@@ -60,7 +60,7 @@ getAllOrders(): Observable<Order[]>
 
     return this.http.post<Order>(`${this.apiUrl}/single`, order, { headers }).pipe(
       catchError(error => {
-        console.error('Error adding order:', error);
+        // console.error('Error adding order:', error);
         return throwError(() => new Error('Failed to add order. Please try again.'));
       })
     );
@@ -74,7 +74,7 @@ getAllOrders(): Observable<Order[]>
 
     return this.http.post<Order[]>(`${this.apiUrl}/multiple`, orders, { headers }).pipe(
       catchError(error => {
-        console.error('Error adding multiple orders:', error);
+        // console.error('Error adding multiple orders:', error);
         return throwError(() => new Error('Failed to add multiple orders. Please try again.'));
       })
     );
@@ -83,13 +83,13 @@ getAllOrders(): Observable<Order[]>
   /** Helper function to get authentication headers */
   private getAuthHeaders(): HttpHeaders | null {
     if (!this.isBrowser) {
-      console.warn('Skipping authentication headers: Running in SSR mode.');
+      // console.warn('Skipping authentication headers: Running in SSR mode.');
       return null;
     }
 
     const jwtToken = this.getToken();
     if (!jwtToken) {
-      console.error('JWT Token not found in sessionStorage');
+      // console.error('JWT Token not found in sessionStorage');
       return null;
     }
 

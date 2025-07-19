@@ -19,18 +19,16 @@ export class UserService {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  /**
-   * ✅ Fetches user data (Only in browser mode)
-   */
+  
   getUser(): Observable<any> {
     if (!this.isBrowser) {
-      console.warn('Skipping getUser(): Running in SSR mode.');
+      // console.warn('Skipping getUser(): Running in SSR mode.');
       return of(null); // ✅ Prevents SSR crashes
     }
 
     const jwtToken = this.getToken();
     if (!jwtToken) {
-      console.warn('JWT Token not found in browser storage.');
+      // console.warn('JWT Token not found in browser storage.');
       return of(null); // ✅ Prevents UI from breaking
     }
 
@@ -38,7 +36,7 @@ export class UserService {
 
     return this.httpClient.get<any>(this.apiurl, { headers }).pipe(
       catchError((error) => {
-        console.error('Error fetching user data:', error);
+        // console.error('Error fetching user data:', error);
         return throwError(() => new Error('Failed to fetch user data.'));
       })
     );

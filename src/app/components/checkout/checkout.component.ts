@@ -72,13 +72,13 @@ export class CheckoutComponent implements OnInit {
 
         this.orderService.addOrder(orderData).subscribe(
           (response) => {
-            console.log('Order placed:', response);
+            // console.log('Order placed:', response);
             this.cartService.clearBuyNowItem();
             this.router.navigate(['/home']);
             alert('Order placed successfully!');
           },
           (error) => {
-            console.error('Order placement failed:', error);
+            // console.error('Order placement failed:', error);
             alert('Failed to place order. Please try again.');
           }
         );
@@ -94,13 +94,13 @@ export class CheckoutComponent implements OnInit {
 
         this.orderService.addMultipleOrders(orderData).subscribe(
           (response) => {
-            console.log('Order placed:', response);
+            // console.log('Order placed:', response);
             this.cartService.clearCart();
             this.router.navigate(['/home']);
             alert('Order placed successfully!');
           },
           (error) => {
-            console.error('Order placement failed:', error);
+            // console.error('Order placement failed:', error);
             alert('Failed to place order. Please try again.');
           }
         );

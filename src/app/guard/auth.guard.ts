@@ -9,16 +9,16 @@ export const authGuard: CanActivateFn = (route, state) => {
   const token = isBrowser ? sessionStorage.getItem('jwtToken') : null;
 
   if (token) {
-    console.log('AuthGuard executed. Token found:', token);
+    // console.log('AuthGuard executed. Token found:', token);
     return true;
   } else {
-    console.log('AuthGuard executed. No token found.');
+    // console.log('AuthGuard executed. No token found.');
 
     if (isBrowser) {
       alert('Please Login first to Purchase'); // ✅ Only runs in the browser
       router.navigate(['/login']);
     } else {
-      console.warn('Skipping alert and navigation: Running in SSR mode.');
+      // console.warn('Skipping alert and navigation: Running in SSR mode.');
     }
 
     return false;

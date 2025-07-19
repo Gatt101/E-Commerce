@@ -32,21 +32,20 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.userForm.valid) {
-      console.log(this.userForm.value);
+      // console.log(this.userForm.value);
     }
 
-    // Send login data to server https://ecommerce-backend-6pfd.onrender.com/login
     this.httpClient.post(`${environment.apiurl}/login`, this.userForm.value, { responseType: 'text' })
       .subscribe(
         (data: string) => {
-          console.log('JWT Token:', data);
+          // console.log('JWT Token:', data);
           this.saveToken(data); // ✅ Uses safe method to store token
           alert('Login successful');
           this.router.navigate(['/home']);
         },
         (error) => {
           alert('Invalid credentials');
-          console.error(error);
+          // console.error(error);
         }
       );
   }

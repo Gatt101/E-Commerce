@@ -24,18 +24,18 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log(this.userForm.value);
+      // console.log(this.userForm.value);
       
       this.httpClient.post(`${environment.apiurl}/register`, this.userForm.value)
         .subscribe(
           (response) => {
-            console.log('Registration successful:', response);
+            // console.log('Registration successful:', response);
             this.router.navigate(['/home']);
             alert('Registration successful');
           },
           (error) => {
             alert('Registration failed');
-            console.error(error);
+            // console.error(error);
           }
         );
     }

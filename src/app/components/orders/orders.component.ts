@@ -41,11 +41,11 @@ export class OrdersComponent implements OnInit {
           if (this.name()) {
             this.loadOrders();
           } else {
-            console.error('User name is null. Cannot load orders.');
+            // console.error('User name is null. Cannot load orders.');
           }
         },
         error: (err) => {
-          console.error('Error fetching user:', err);
+          // console.error('Error fetching user:', err);
         }
       });
     }, 0);
@@ -55,10 +55,10 @@ export class OrdersComponent implements OnInit {
     this.orderService.getAllOrders().subscribe({
       next: (data: Order[]) => {
         this.orders.set(data);
-        console.log('Orders loaded:', this.orders());
+        // console.log('Orders loaded:', this.orders());
       },
       error: (err) => {
-        console.error('Error fetching orders:', err);
+        // console.error('Error fetching orders:', err);
       }
     });
   }

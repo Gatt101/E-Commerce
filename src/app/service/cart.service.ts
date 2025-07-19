@@ -33,7 +33,7 @@ export class CartService {
       const savedCart = sessionStorage.getItem('cart'); // ✅ Uses sessionStorage
       return savedCart ? JSON.parse(savedCart) : [];
     } catch (error) {
-      console.error('Error loading cart from sessionStorage:', error);
+      // console.error('Error loading cart from sessionStorage:', error);
       return [];
     }
   }
@@ -47,7 +47,7 @@ export class CartService {
     try {
       sessionStorage.setItem('cart', JSON.stringify(items)); // ✅ Uses sessionStorage
     } catch (error) {
-      console.error('Error saving cart to sessionStorage:', error);
+      // console.error('Error saving cart to sessionStorage:', error);
     }
   }
 
