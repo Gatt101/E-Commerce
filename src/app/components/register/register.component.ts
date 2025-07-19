@@ -2,6 +2,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.production';
 
 @Component({
   selector: 'app-register',
@@ -24,8 +25,8 @@ export class RegisterComponent {
   onSubmit() {
     if (this.userForm.valid) {
       console.log(this.userForm.value);
-      // send data to server https://ecommerce-backend-6pfd.onrender.com/register
-      this.httpClient.post('http://localhost:8080/register', this.userForm.value)
+      
+      this.httpClient.post(`${environment.apiurl}/register`, this.userForm.value)
         .subscribe(
           (response) => {
             console.log('Registration successful:', response);

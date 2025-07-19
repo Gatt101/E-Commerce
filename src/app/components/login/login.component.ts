@@ -3,6 +3,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment.production';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,7 @@ export class LoginComponent {
     }
 
     // Send login data to server https://ecommerce-backend-6pfd.onrender.com/login
-    this.httpClient.post('http://localhost:8080/login', this.userForm.value, { responseType: 'text' })
+    this.httpClient.post(`${environment.apiurl}/login`, this.userForm.value, { responseType: 'text' })
       .subscribe(
         (data: string) => {
           console.log('JWT Token:', data);

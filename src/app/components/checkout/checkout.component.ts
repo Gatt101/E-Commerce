@@ -30,7 +30,8 @@ export class CheckoutComponent implements OnInit {
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
-    this.checkoutForm = this.formBuilder.group({
+    this.checkoutForm = this.formBuilder.group(
+      {
       fullName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       address: ['', [Validators.required]],
@@ -40,7 +41,8 @@ export class CheckoutComponent implements OnInit {
       cardNumber: ['', [Validators.required, Validators.pattern('^[0-9]{16}$')]],
       expiryDate: ['', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])\/([0-9]{2})$')]],
       cvv: ['', [Validators.required, Validators.pattern('^[0-9]{3}$')]]
-    });
+    }
+  );
   }
 
   ngOnInit() {}
